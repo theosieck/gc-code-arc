@@ -28,38 +28,63 @@ register_activation_hook(__FILE__,'gcac_create_table'); // this function call ha
 function gc_set_project() {
 	if(is_page('manage')) {
 		global $gc_project;
-		// $base_url = get_site_url() . '/?page_id=6123&new_project=';	// local
-		$base_url = get_site_url() . '/manage/?new_project=';	// live
 
-		// if new project set, update the project var
-		$new_project = sanitize_text_field(get_query_var('new_project'));
-		if($new_project) {
-			$gc_project = $new_project;
-			update_post_meta(get_page_by_title('Manage')->ID,'project',$new_project);
-		}
+		// enqueue js
+		wp_enqueue_script(
+				'gcaa-set-project-js',
+				plugins_url('/assets/js/set-project.js', __FILE__),
+				['jquery'],
+				time(),
+				true
+		);
+
+		// send ajax url and nonce to js
+		$gc_project_data = array(
+			'ajax_url' => admin_url('admin-ajax.php'),
+			'nonce' => wp_create_nonce('gcaa_project_nonce'),
+			'projOptions' => explode(',',get_post_meta(get_page_by_title('Manage')->ID,'project_options',true)),
+		);
+		wp_localize_script('gcaa-set-project-js', 'projObj', $gc_project_data);
 
 		// print headings
-		echo "<h3>Current Project: {$gc_project}</h3>";
-		echo "<h3>Project Options:</h3>";
-
-		// generate project options
-		$gc_project_options = explode(',',get_post_meta(get_page_by_title('Manage')->ID,'project_options',true));
-		foreach($gc_project_options as $option) {
-			// generate link with option variable
-			$var_url = $base_url . str_replace(' ','+',$option);
-			// generate button
-			echo "<a href='{$var_url}'><button>{$option}</button></a><br /><br />";
-		}
+		echo "<h3 id='current-project'>Current Project: {$gc_project}</h3>";
+		echo "<h3>Project Options:</h3><div id='project-options'></div>";
 
 		// allow user to add new project
-		echo "<h3>Add New Project:</h3>";
-		echo "<p>I'll have an input box here to add a new project</p>";
+		echo "<h3 style='margin-top:10px;'>Add New Project:</h3>";
+		echo "<form id='new-project-form'><input placeholder='Project title' name='newProjectName'><button style='margin-top:10px;'>Submit</button></form>";
 
 		// link to team progress
-		echo "<a href='" . get_site_url() . "/team-progress'><h3>Team Progress Page</h3></a>";	// this link won't work on local
+		echo "<br /><a href='" . get_site_url() . "/team-progress'><h3>Team Progress Page</h3></a>";	// this link won't work on local
 	}
 }
 add_action('genesis_entry_content','gc_set_project');
+
+// Genesis activation hook
+add_action('wp_ajax_gc_update_project','gc_update_project');
+function gc_update_project() {
+	check_ajax_referer('gcaa_project_nonce');
+
+	// check for a new project and update the post meta if there is one
+	$new_gc_project = $_POST['project'];
+	if($new_gc_project) {
+		$gc_project = $new_gc_project;
+		update_post_meta(get_page_by_title('Manage')->ID,'project',$new_gc_project);
+		$project_options = get_post_meta(get_page_by_title('Manage')->ID,'project_options',true);
+		$project_array = explode(',',$project_options);
+		if(!in_array($new_gc_project,$project_array)) {
+			update_post_meta(get_page_by_title('Manage')->ID,'project_options',$project_options . ',' . $new_gc_project);
+		}
+		$response['type'] = 'success';
+	} else {
+		$response['type'] = 'no project defined';
+	}
+
+	// send a response back
+	$response = json_encode($response);
+	echo $response;
+	die();
+}
 
 /**
  * print clarifying info to the user based on which project is active
@@ -146,8 +171,8 @@ function gcac_display_progress() {
 		global $gc_project;
     global $wpdb;
 		global $current_user;	// only needed for indep
-		// $ct_pair_page = 'https://local.sandbox/?page_id=6121';	// local
-		$ct_pair_page = get_site_url() . "/progress/coded-cases";	// live
+		$ct_pair_page = 'https://local.sandbox/?page_id=6121&';	// local
+		// $ct_pair_page = get_site_url() . "/progress/coded-cases/?";	// live
     $posts_table = $wpdb->prefix . 'posts';
     $db = new ARCJudgDB;
     $judgments_table = $db->get_name();
@@ -242,8 +267,7 @@ function gcac_display_progress() {
 
 				if($is_indep) {
 					// make url for editing coded responses
-					// $list_url = $ct_pair_page . "&comp_num={$comp_num}&task_num={$task_num}";	// local
-					$list_url = $ct_pair_page . "/?comp_num={$comp_num}&task_num={$task_num}";	// live
+					$list_url = $ct_pair_page . "comp_num={$comp_num}&task_num={$task_num}";
 				}
 
         // print counts
@@ -267,8 +291,8 @@ function gcac_display_ct_pair_list() {
 		$posts_table = $wpdb->prefix . 'posts';
 		$db = new ARCJudgDB;
     $judgments_table = $db->get_name();
-		// $assess_page = 'https://local.sandbox/?page_id=5252';	// local
-		$assess_page = get_site_url() . "/coding/live";	// live
+		$assess_page = 'https://local.sandbox/?page_id=5252&';	// local
+		// $assess_page = get_site_url() . "/coding/live/?";	// live
 
 		// get url vars
 		$comp_num = sanitize_text_field(get_query_var('comp_num'));
@@ -283,8 +307,7 @@ function gcac_display_ct_pair_list() {
 		foreach($titles as $title_obj) {
 			$title = $title_obj->resp_title;
 			$sub_num = substr($title,strpos($title,'sub')+3,2);
-			// $link = $assess_page . "&comp_num={$comp_num}&task_num={$task_num}&sub_num={$sub_num}";	// local
-			$link = $assess_page . "/?comp_num={$comp_num}&task_num={$task_num}&sub_num={$sub_num}";	// live
+			$link = $assess_page . "comp_num={$comp_num}&task_num={$task_num}&sub_num={$sub_num}";
 
 			$sql = "SELECT `post_content` FROM `{$posts_table}` WHERE `post_title` = '{$title}'";
 			$content_obj = ($wpdb->get_results($sql))[0];
