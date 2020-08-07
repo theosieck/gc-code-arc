@@ -64,20 +64,47 @@ add_action('genesis_entry_content','gc_set_project');
 add_action('wp_ajax_gc_update_project','gc_update_project');
 function gc_update_project() {
 	check_ajax_referer('gcaa_project_nonce');
+	global $gc_project;
 
-	// check for a new project and update the post meta if there is one
-	$new_gc_project = $_POST['project'];
-	if($new_gc_project) {
-		$gc_project = $new_gc_project;
-		update_post_meta(get_page_by_title('Manage')->ID,'project',$new_gc_project);
-		$project_options = get_post_meta(get_page_by_title('Manage')->ID,'project_options',true);
-		$project_array = explode(',',$project_options);
-		if(!in_array($new_gc_project,$project_array)) {
-			update_post_meta(get_page_by_title('Manage')->ID,'project_options',$project_options . ',' . $new_gc_project);
+	// check for a project to remove
+	$removable = $_POST['removable'];
+	if($removable) {
+		// if current project is the one to remove, return an error
+		if($gc_project==$removable) {
+			$response['type'] = 'Please change the current project before attempting to remove it';
+		} else {
+			// get current options
+			$manage_id = get_page_by_title('Manage')->ID;
+			$project_options = get_post_meta($manage_id,'project_options',true);
+			$project_array = explode(',',$project_options);
+			// make sure option exists, then remove it
+			$key = array_search($removable,$project_array);
+			if($key!==false) {
+				unset($project_array[$key]);
+				$new_options = implode(',',$project_array);
+				update_post_meta($manage_id,'project_options',$new_options);
+				$response['newOptions'] = $project_array;
+				$response['removed'] = $removable;
+				$response['type'] = 'success';
+			} else {
+				$response['type'] = 'Sorry, the given project does not exist';
+			}
 		}
-		$response['type'] = 'success';
 	} else {
-		$response['type'] = 'no project defined';
+		// check for a new project and update the post meta if there is one
+		$new_gc_project = $_POST['project'];
+		if($new_gc_project) {
+			$gc_project = $new_gc_project;
+			update_post_meta(get_page_by_title('Manage')->ID,'project',$new_gc_project);
+			$project_options = get_post_meta(get_page_by_title('Manage')->ID,'project_options',true);
+			$project_array = explode(',',$project_options);
+			if(!in_array($new_gc_project,$project_array)) {
+				update_post_meta(get_page_by_title('Manage')->ID,'project_options',$project_options . ',' . $new_gc_project);
+			}
+			$response['type'] = 'success';
+		} else {
+			$response['type'] = 'No project defined';
+		}
 	}
 
 	// send a response back
@@ -171,8 +198,8 @@ function gcac_display_progress() {
 		global $gc_project;
     global $wpdb;
 		global $current_user;	// only needed for indep
-		$ct_pair_page = 'https://local.sandbox/?page_id=6121&';	// local
-		// $ct_pair_page = get_site_url() . "/progress/coded-cases/?";	// live
+		// $ct_pair_page = 'https://local.sandbox/?page_id=6121&';	// local
+		$ct_pair_page = get_site_url() . "/progress/coded-cases/?";	// live
     $posts_table = $wpdb->prefix . 'posts';
     $db = new ARCJudgDB;
     $judgments_table = $db->get_name();
@@ -291,8 +318,8 @@ function gcac_display_ct_pair_list() {
 		$posts_table = $wpdb->prefix . 'posts';
 		$db = new ARCJudgDB;
     $judgments_table = $db->get_name();
-		$assess_page = 'https://local.sandbox/?page_id=5252&';	// local
-		// $assess_page = get_site_url() . "/coding/live/?";	// live
+		// $assess_page = 'https://local.sandbox/?page_id=5252&';	// local
+		$assess_page = get_site_url() . "/coding/live/?";	// live
 
 		// get url vars
 		$comp_num = sanitize_text_field(get_query_var('comp_num'));
