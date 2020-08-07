@@ -222,6 +222,8 @@ function arc_pull_review_data_cpts($judge1, $judge2, $comp_num, $task_num, $bloc
     $where = "comp_num = {$comp_num} AND task_num = {$task_num} AND judg_type = 'ind' AND project = '{$gc_project}'";
     $all_data = $db->get_all_arraya($where);
 
+		// ddd($all_data);
+
     // organize the data into a multi-dimensional array where the key is the subject number and the value is
     // an array of all the db lines for that subject, indexed by user id
     $all_subs = [];
