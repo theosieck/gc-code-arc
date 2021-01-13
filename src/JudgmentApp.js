@@ -26,12 +26,6 @@ class JudgmentApp extends Component {
         allDone: false // Whether the 'ShowEnd' component should be displayed
         // showMatches: review,  // display total number matches
     };
-    // Labels for Response judgments
-    levelTitles = {
-        1: "Less Skilled",
-        2: "Proficient",
-        3: "Master"
-    };
 
     /**
      * handleNext: checks whether the user is finished with the current set, saves the current line to
@@ -61,6 +55,8 @@ class JudgmentApp extends Component {
         for(let i=1;i<=numCodes;i++) {
             codesArray[i] = [codes[i],excerpts[i]]
         }
+
+				console.log(codesArray);
 
         var dataObj = {
             sub_num: respObj.subNums[this.state.trial-1],
@@ -153,9 +149,8 @@ class JudgmentApp extends Component {
                     <PresentContext
                         scenario={respObj.sContent}
                         competencies={respObj.cDefinitions}
-                        levelTitles={this.levelTitles}
                         sTitle={respObj.sTitle}
-                        cTitle={respObj.cTitles[0]}
+                        cTitles={respObj.cTitles}
                     />
                 }
                 { (!this.state.allDone && !review) &&

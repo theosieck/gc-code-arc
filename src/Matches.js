@@ -20,8 +20,10 @@ const Matches = (props) => {
     let matches = []
     let numMatches = 0
     if(props.matches) {
+			console.log(props.matches)
         matches = genMatches(props.codes,props.matches,props.setMatches);
         numMatches = matches[0]
+				console.log(matches)
     }
     let displayed = 0;
     return (

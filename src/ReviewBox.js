@@ -6,7 +6,7 @@ import ReviewComp from './ReviewComp'
 
 class ReviewBox extends Component {
     state = {
-        clicked:[0,0,0,0,0,0,0,0,0,0],
+        clicked:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         matchExcerpts:[]
     }
 
@@ -14,7 +14,7 @@ class ReviewBox extends Component {
 
     handleSingles = (e) => {
         e.preventDefault();
-        const codeNum = parseInt(e.target.textContent[0]);
+        const codeNum = parseInt(isNaN(e.target.textContent[1]) ? e.target.textContent[0] : e.target.textContent[0]+e.target.textContent[1]);
         this.setState((prevState) => ({
             clicked: prevState.clicked.map((num,i) => i==codeNum ? (1 - num) : num)
         }))
@@ -26,14 +26,15 @@ class ReviewBox extends Component {
         this.state.clicked.forEach((codeNum,i) => codeNum == 1 ? excerpts[i]=this.props.reviewSet[i] : excerpts[i]=this.state.matchExcerpts[i])
         const clicked = []
         excerpts.forEach((excerpt,i) => excerpt ? clicked[i] = 1 : excerpts[i] = '')
-        this.state.clicked = [0,0,0,0,0,0,0,0,0,0];
+        this.state.clicked = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
         this.state.matchExcerpts = []
         this.props.handleNext(excerpts,clicked)
     }
 
     handleMatches = (e) => {
         const text = e.target.textContent
-        const codeNum = parseInt(text[0]);
+				console.log(text)
+        const codeNum = parseInt(isNaN(text[1]) ? text[0] : text[0]+text[1]);
         const excerptNum = parseInt(text[text.length-1])
         this.setState((prevState) => ({
             clicked: prevState.clicked.map((num,i) => i==codeNum ? (num==excerptNum+1 ? 0 : excerptNum+1) : num)
@@ -49,19 +50,19 @@ class ReviewBox extends Component {
                 {ReactHtmlParser(this.props.response)}
             </div>
             <div style={this.divStyle}>
-                {this.props.judge1Comments && 
+                {this.props.judge1Comments &&
                     <div>
                     <h2>Judge 1's Comments:</h2>
                     <p>{ReactHtmlParser(this.props.judge1Comments)}</p>
                     </div>
                 }
-                {this.props.judge2Comments && 
+                {this.props.judge2Comments &&
                     <div>
                     <h2>Judge 2's Comments:</h2>
                     <p>{ReactHtmlParser(this.props.judge2Comments)}</p>
                     </div>
                 }
-                <ReviewComp 
+                <ReviewComp
                     codes={this.props.codes}
                     excerpts={this.props.reviewSet}
                     handleButton={this.handleSingles}

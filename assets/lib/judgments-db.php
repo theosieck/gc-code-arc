@@ -42,6 +42,12 @@ function gcac_create_table() {
         code7 smallint(1) UNSIGNED NOT NULL,
         code8 smallint(1) UNSIGNED,
         code9 smallint(1) UNSIGNED,
+				code10 smallint(1) UNSIGNED,
+				code11 smallint(1) UNSIGNED,
+        code12 smallint(1) UNSIGNED,
+        code13 smallint(1) UNSIGNED,
+        code14 smallint(1) UNSIGNED,
+        code15 smallint(1) UNSIGNED,
         excerpt1 longtext,
         excerpt2 longtext,
         excerpt3 longtext,
@@ -51,6 +57,12 @@ function gcac_create_table() {
         excerpt7 longtext,
         excerpt8 longtext,
         excerpt9 longtext,
+				excerpt10 longtext,
+				excerpt11 longtext,
+        excerpt12 longtext,
+        excerpt13 longtext,
+        excerpt14 longtext,
+        excerpt15 longtext,
         judg_comments longtext,
         rater1 mediumint(9) UNSIGNED,
         rater2 mediumint(9) UNSIGNED,
@@ -271,7 +283,7 @@ function arc_pull_review_data_cpts($judge1, $judge2, $comp_num, $task_num, $bloc
             }
 
             // sort codes for this subject into matches and reviews
-            for($i=1;$i<10;$i++) {
+            for($i=1;$i<16;$i++) {
                 $code_num = 'code' . $i;
                 // ignore codes that don't exist
                 if($sub[$judge1][$code_num]==NULL) {
