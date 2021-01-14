@@ -96,13 +96,13 @@ function arc_pull_data_cpts($comp_num, $task_num, $sub_num, $block_num) {
 		// set up meta query
 		$meta_query = array(
 				'relation' => 'AND',
-				array(
-						'key' => 'comp_num',
-						'value' => $comp_num,
-						'compare' => '=',
-				),
-				array(
-					'relation' => 'AND',
+				// array(
+				// 		'key' => 'comp_num',
+				// 		'value' => $comp_num,
+				// 		'compare' => '=',
+				// ),
+				// array(
+				// 	'relation' => 'AND',
 					array(
 						'key' => 'task_num',
 						'value' => $task_num,
@@ -113,7 +113,7 @@ function arc_pull_data_cpts($comp_num, $task_num, $sub_num, $block_num) {
 						'value' => $gc_project,
 						'compare' => '=',
 					),
-				),
+				// ),
 			);
 		if($sub_num || $block_num) {
 			// if sub_num is given, we don't need the block number because sub_num is more specific
