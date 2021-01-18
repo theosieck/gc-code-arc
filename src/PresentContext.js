@@ -29,7 +29,7 @@ function PresentContext(props) {
         <div className={classes.root}>
             <ExpansionPanel>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}>{props.sTitle}</Typography>
+                    <Typography className={classes.heading}>Task {props.sTitle}</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <Typography className={classes.heading}>
@@ -39,7 +39,7 @@ function PresentContext(props) {
             </ExpansionPanel>
             <ExpansionPanel>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}>{props.cTitles[0]}</Typography>
+                    <Typography className={classes.heading}>Comp {props.cTitles[0]}</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <Typography className={classes.heading}>
