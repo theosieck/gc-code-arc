@@ -201,13 +201,16 @@ function gcac_display_progress() {
 		// $ct_pair_page = 'https://local.sandbox/?page_id=6121&';	// local
 		$ct_pair_page = get_site_url() . "/progress/coded-cases/?";	// live
     $posts_table = $wpdb->prefix . 'posts';
+		$postmeta_table = $wpdb->prefix . 'postmeta';
     $db = new ARCJudgDB;
     $judgments_table = $db->get_name();
 
 		echo "<h2>{$gc_project} Progress</h2>";
 
     // get array of competencies
-    $sql = "SELECT DISTINCT `post_title` FROM `{$posts_table}` WHERE `post_title` LIKE '%-Overall' AND `post_status` = 'publish' AND `post_type` = 'competency' ORDER BY `ID`";
+		$sql = "SELECT DISTINCT `post_title` FROM `{$posts_table}` WHERE `post_status` = 'publish' AND `post_type` = 'competency' AND `ID` IN (SELECT DISTINCT `post_id` FROM `{$postmeta_table}` WHERE `meta_key` = 'comp_part' AND `meta_value` = 0)  ORDER BY `ID`";
+		// ddd($wpdb->get_results($sql));
+    // $sql = "SELECT DISTINCT `post_title` FROM `{$posts_table}` WHERE `post_title` LIKE '%-Overall' AND `post_status` = 'publish' AND `post_type` = 'competency' ORDER BY `ID`";
     $competencies = $wpdb->get_results($sql);
     // get array of scenario titles
     $sql = "SELECT DISTINCT `post_title` FROM `{$posts_table}` WHERE `post_title` NOT LIKE '0-%' AND `post_status` = 'publish' AND `post_type` = 'scenario'";
@@ -236,9 +239,13 @@ function gcac_display_progress() {
     // iterate over competencies
     foreach($competencies as $comp_obj) {
       // get competency name and number
-      $comp_str = $comp_obj->post_title;
-      $comp_name = substr($comp_str,0,strpos($comp_str,'-Overall'));
-      $comp_num = substr($comp_str,0,strpos($comp_str,'-'));
+      $comp_name = $comp_obj->post_title;
+			// ddd($comp_name);
+			$end_tag_location = strpos($comp_name,'-',3);	// location in the string of the '-overall' tag
+			if($end_tag_location) {
+				$comp_name = substr($comp_name,0,$end_tag_location);
+			}
+      $comp_num = substr($comp_name,0,strpos($comp_name,'-'));
 
       // print competency name
       echo "<h3>Competency {$comp_name}</h3>";
@@ -451,40 +458,21 @@ function arc_save_data() {
         'judg_type' => $judg_type,
         'judg_time'  => $judg_time,
         'code_scheme' => $code_scheme,
-        'code1' => $codes[1][0],
-        'excerpt1' => $codes[1][1],
-        'code2' => $codes[2][0],
-        'excerpt2' => $codes[2][1],
-        'code3' => $codes[3][0],
-        'excerpt3' => $codes[3][1],
-        'code4' => $codes[4][0],
-        'excerpt4' => $codes[4][1],
-        'code5' => $codes[5][0],
-        'excerpt5' => $codes[5][1],
-        'code6' => $codes[6][0],
-        'excerpt6' => $codes[6][1],
-        'code7' => $codes[7][0],
-        'excerpt7' => $codes[7][1],
-        'code8' => $codes[8][0],
-        'excerpt8' => $codes[8][1],
-        'code9' => $codes[9][0],
-        'excerpt9' => $codes[9][1],
-				'code10' => $codes[10][0],
-        'excerpt10' => $codes[10][1],
-				'code11' => $codes[11][0],
-        'excerpt11' => $codes[11][1],
-        'code12' => $codes[12][0],
-        'excerpt12' => $codes[12][1],
-        'code13' => $codes[13][0],
-        'excerpt13' => $codes[13][1],
-        'code14' => $codes[14][0],
-        'excerpt14' => $codes[14][1],
-        'code15' => $codes[15][0],
-        'excerpt15' => $codes[15][1],
         'rater1' => $judges[0],
         'rater2' => $judges[1],
         'judg_comments' => $comment
     );
+
+		unset($codes[0]);	// there is no code 0
+		$code_data = array();
+		$i = 1;
+		foreach($codes as $code) {
+			$code_data["code{$i}"] = $code[0];
+			$code_data["excerpt{$i}"] = $code[1];
+			$i++;
+		}
+
+		$db_data = array_merge($db_data,$code_data);
 
     $success = $db->insert($db_data);
     if($success) {
