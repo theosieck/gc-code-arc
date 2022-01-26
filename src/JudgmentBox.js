@@ -1,6 +1,6 @@
 const { Component } = wp.element;
 
-import Grid from '@material-ui/core/Grid';
+import {Grid} from '@mui/material';
 import PresentResp from './PresentResp';
 import Codes from './Codes';
 import Rows from './Rows';

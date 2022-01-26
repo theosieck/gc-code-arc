@@ -19,10 +19,10 @@ const extractConfig = {
     },
     {
       loader: 'sass-loader',
-      query: {
-        outputStyle:
-          'production' === process.env.NODE_ENV ? 'compressed' : 'nested',
-      },
+      // query: {
+      //   outputStyle:
+      //     'production' === process.env.NODE_ENV ? 'compressed' : 'nested',
+      // },
     },
   ],
 };
@@ -40,8 +40,9 @@ module.exports = {
     'react': 'React',
     'react-dom': 'ReactDOM',
   },
+  mode: 'development',
   watch: 'production' !== process.env.NODE_ENV,
-  devtool: 'cheap-eval-source-map',
+  // devtool: 'cheap-eval-source-map',
   module: {
     rules: [
       {
@@ -51,13 +52,13 @@ module.exports = {
           loader: 'babel-loader',
         },
       },
-      {
-        test: /([a-zA-Z0-9\s_\\.\-\(\):])+(.s?css)$/,
-        use: blocksCSSPlugin.extract( extractConfig ),
-      },
+      // {
+      //   test: /([a-zA-Z0-9\s_\\.\-\(\):])+(.s?css)$/,
+      //   use: blocksCSSPlugin.extract( extractConfig ),
+      // },
     ],
   },
   plugins: [
-    blocksCSSPlugin,
+    // blocksCSSPlugin,
   ],
 };

@@ -1,7 +1,7 @@
-import ReactHtmlParser from 'react-html-parser';
-import SelectionHighlighter from 'react-highlight-selection';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
+// import ReactHtmlParser from 'react-html-parser';
+// import SelectionHighlighter from 'react-highlight-selection';
+// import Grid from '@material-ui/core/Grid';
+// import Button from '@material-ui/core/Button';
 
 import Row from './Row';
 

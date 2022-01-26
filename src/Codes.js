@@ -1,7 +1,6 @@
 const { Component } = wp.element;
 
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
+import {Button, Grid} from '@mui/material';
 
 
 class Codes extends Component {
