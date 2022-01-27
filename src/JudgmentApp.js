@@ -142,6 +142,7 @@ class JudgmentApp extends Component {
      * Renders the components for JudgmentApp
      */
     render() {
+        console.log('state',this.state);
         return (
             <div>
                 { this.state.allDone && <ShowEnd />}

@@ -21,25 +21,27 @@ const styles = theme => ({
 });
 
 function PresentContext(props) {
-    const { classes } = props;
+    // const { classes } = props;
     return (
-        <div className={classes.root}>
+        // <div className={classes.root}>
+        <div>
             <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}>Task {props.sTitle}</Typography>
+                    <Typography>Task {props.sTitle}</Typography>
+                    {/* <Typography className={classes.heading}>Task {props.sTitle}</Typography> */}
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Typography className={classes.heading}>
+                    <Typography>
                     {ReactHtmlParser(props.scenario)}
                     </Typography>
                 </AccordionDetails>
             </Accordion>
             <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}>Comp {props.cTitles[0]}</Typography>
+                    <Typography>Comp {props.cTitles[0]}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Typography className={classes.heading}>
+                    <Typography>
                         {ReactHtmlParser(props.competencies[0])}
                     </Typography>
                 </AccordionDetails>
@@ -78,9 +80,9 @@ function PresentContext(props) {
     );
 }
 
-PresentContext.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
+// PresentContext.propTypes = {
+//     classes: PropTypes.object.isRequired,
+// };
 
 export default PresentContext;
 // export default withStyles(styles)(PresentContext);
