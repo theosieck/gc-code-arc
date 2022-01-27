@@ -6,8 +6,8 @@
 //import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import PropTypes from 'prop-types';
-import { withStyles } from '@emotion/styled';
-import {ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography} from '@mui/material/';
+// import { withStyles } from '@emotion/styled';
+import {Accordion, AccordionSummary, AccordionDetails, Typography} from '@mui/material/';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const styles = theme => ({
@@ -24,56 +24,56 @@ function PresentContext(props) {
     const { classes } = props;
     return (
         <div className={classes.root}>
-            <ExpansionPanel>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography className={classes.heading}>Task {props.sTitle}</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                </AccordionSummary>
+                <AccordionDetails>
                     <Typography className={classes.heading}>
                     {ReactHtmlParser(props.scenario)}
                     </Typography>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
-            <ExpansionPanel>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography className={classes.heading}>Comp {props.cTitles[0]}</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                </AccordionSummary>
+                <AccordionDetails>
                     <Typography className={classes.heading}>
                         {ReactHtmlParser(props.competencies[0])}
                     </Typography>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
-            {/*<ExpansionPanel>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                </AccordionDetails>
+            </Accordion>
+            {/*<Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography className={classes.heading}>Comp {props.cTitles[3]}</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                </AccordionSummary>
+                <AccordionDetails>
                     <Typography className={classes.heading}>
                         {ReactHtmlParser(props.competencies[3])}
                     </Typography>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
-            <ExpansionPanel>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography className={classes.heading}>Comp {props.cTitles[2]}</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                </AccordionSummary>
+                <AccordionDetails>
                     <Typography className={classes.heading}>
                         {ReactHtmlParser(props.competencies[2])}
                     </Typography>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
-            <ExpansionPanel>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography className={classes.heading}>Comp {props.cTitles[1]}</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                </AccordionSummary>
+                <AccordionDetails>
                     <Typography className={classes.heading}>
                         {ReactHtmlParser(props.competencies[1])}
                     </Typography>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>*/}
+                </AccordionDetails>
+            </Accordion>*/}
         </div>
     );
 }
@@ -82,4 +82,5 @@ PresentContext.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(PresentContext);
+export default PresentContext;
+// export default withStyles(styles)(PresentContext);

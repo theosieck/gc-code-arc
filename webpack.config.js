@@ -40,7 +40,7 @@ module.exports = {
     'react': 'React',
     'react-dom': 'ReactDOM',
   },
-  mode: 'development',
+  mode: 'production',
   watch: 'production' !== process.env.NODE_ENV,
   // devtool: 'cheap-eval-source-map',
   module: {
