@@ -12,6 +12,7 @@ import ReviewBox from '../ReviewBox/ReviewBox';
 import JudgmentBox from '../JudgmentBox/JudgmentBox';
 
 export default function JudgmentApp () {
+    console.log(respObj);
     // initial variables
     const review = respObj.review == '1';
     const nTrials = respObj.respIds.length;
@@ -29,7 +30,7 @@ export default function JudgmentApp () {
         const startDate = Date.now();
         setStartTime(Math.floor(startDate / 1000)); // UNIX time on page load in seconds
 
-        let tmpCodes = [];
+        const tmpCodes = [];
         for(let i=1;i<=numCodes;i++) {
             tmpCodes[i] = respObj.codeLabels[i];
         }
