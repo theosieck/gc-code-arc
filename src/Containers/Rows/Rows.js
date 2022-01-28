@@ -3,7 +3,7 @@
 // import Grid from '@material-ui/core/Grid';
 // import Button from '@material-ui/core/Button';
 
-import Row from './Row';
+import Row from '../../Components/Row/Row';
 
 const Rows = (props) => (
     <div>

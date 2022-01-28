@@ -1,10 +1,10 @@
 const { Component } = wp.element;
 
 import {Grid} from '@mui/material';
-import PresentResp from './PresentResp';
-import Codes from './Codes';
-import Rows from './Rows';
-import CommentBox from './CommentBox';
+import PresentResp from '../../Components/PresentResp/PresentResp';
+import Codes from '../Codes/Codes';
+import Rows from '../Rows/Rows';
+import CommentBox from '../../Components/CommentBox/CommentBox';
 
 class JudgmentBox extends Component {
 	genState = () => {

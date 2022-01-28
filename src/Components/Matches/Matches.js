@@ -1,5 +1,5 @@
 import {Button} from '@mui/material';
-import Row from './Row';
+import Row from '../Row/Row';
 
 const genMatches = (codes,matches) => {
     const matchArray = [];

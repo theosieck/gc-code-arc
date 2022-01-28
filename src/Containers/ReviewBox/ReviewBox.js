@@ -1,8 +1,8 @@
 const { Component } = wp.element;
 
 import ReactHtmlParser from 'react-html-parser';
-import Matches from './Matches'
-import ReviewComp from './ReviewComp'
+import Matches from '../../Components/Matches/Matches'
+import ReviewComp from '../../Components/ReviewComp/ReviewComp'
 
 class ReviewBox extends Component {
     state = {
