@@ -1,4 +1,5 @@
 import {Button} from '@mui/material';
+import { useSelector } from 'react-redux';
 import Row from '../Row/Row';
 
 
@@ -13,9 +14,10 @@ const genCodes = (codes,excerpts) => {
 }
 
 const ReviewComp = (props) => {
+    const codeLabels = useSelector((state) => state.codeLabels);
     let codes = []
     if(props.excerpts) {
-        codes = genCodes(props.codes,props.excerpts)
+        codes = genCodes(codeLabels,props.excerpts)
     }
     return (
         <div>

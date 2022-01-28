@@ -1,4 +1,5 @@
 import {Button} from '@mui/material';
+import { useSelector } from 'react-redux';
 import Row from '../Row/Row';
 
 const genMatches = (codes,matches) => {
@@ -17,11 +18,12 @@ const genMatches = (codes,matches) => {
 }
 
 const Matches = (props) => {
-    let matches = []
+    const codeLabels = useSelector((state) => state.codeLabels);
+    let matches = [];
     let numMatches = 0
     if(props.matches) {
 			console.log(props.matches)
-        matches = genMatches(props.codes,props.matches,props.setMatches);
+        matches = genMatches(codeLabels,props.matches,props.setMatches);
         numMatches = matches[0]
 				console.log(matches)
     }

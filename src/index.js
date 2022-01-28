@@ -1,3 +1,3 @@
-import JudgmentApp from './Containers/JudgmentApp/JudgmentApp';
+import App from './App';
 
-wp.element.render(<JudgmentApp />, document.querySelector( '.entry-content' ) );
+wp.element.render(<App />, document.querySelector( '.entry-content' ) );

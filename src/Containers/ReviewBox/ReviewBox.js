@@ -1,6 +1,7 @@
 // const { Component } = wp.element;
 
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import ReactHtmlParser from 'react-html-parser';
 import Matches from '../../Components/Matches/Matches'
 import ReviewComp from '../../Components/ReviewComp/ReviewComp'
@@ -8,6 +9,8 @@ import ReviewComp from '../../Components/ReviewComp/ReviewComp'
 export default function ReviewBox (props) {
     const [clicked, setClicked] = useState([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
     const [matchExcerpts, setMatchExcerpts] = useState([]);
+    // retrieve stored redux data
+    const {respId, response} = useSelector((state) => state);
 
     const divStyle = {marginTop: '50px'}
 
@@ -41,8 +44,8 @@ export default function ReviewBox (props) {
     return (
         <div>
         <div style={divStyle}>
-            <h2>Case: {props.respId}</h2>
-            {ReactHtmlParser(props.response)}
+            <h2>Case: {respId}</h2>
+            {ReactHtmlParser(response)}
         </div>
         <div style={divStyle}>
             {props.judge1Comments &&
@@ -58,7 +61,6 @@ export default function ReviewBox (props) {
                 </div>
             }
             <ReviewComp
-                codes={props.codes}
                 excerpts={props.reviewSet}
                 handleButton={handleSingles}
                 state={{
@@ -67,7 +69,6 @@ export default function ReviewBox (props) {
                 }}
             />
             {<Matches
-                codes={props.codes}
                 matches={props.matches}
                 handleButton={handleMatches}
                 state={{

@@ -5,6 +5,7 @@
 //import './judgmentapp.scss';
 
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import PresentContext from '../../Components/PresentContext/PresentContext';
 import ShowEnd from '../../Components/ShowEnd/ShowEnd';
@@ -23,18 +24,30 @@ export default function JudgmentApp () {
     const [respId, setRespId] = useState(respObj.respIds[0]);   // The ID of the Response being judged
     const [startTime, setStartTime] = useState(0);
     const [allDone, setAllDone] = useState(false); // Whether the 'ShowEnd' component should be displayed
-    const [codes,setCodes] = useState([]);
 
-    // set startTime and codes on initial render only
+    const dispatch = useDispatch();
+
+    // set startTime and codes and store in redux on initial render only
     useEffect(() => {
+        // get start date/time
         const startDate = Date.now();
         setStartTime(Math.floor(startDate / 1000)); // UNIX time on page load in seconds
 
-        const tmpCodes = [];
+        // init codes
+        const codeLabels = [];
         for(let i=1;i<=numCodes;i++) {
-            tmpCodes[i] = respObj.codeLabels[i];
+            codeLabels[i] = respObj.codeLabels[i];
         }
-        setCodes(tmpCodes);
+        
+        // store codes, responses, respId in redux
+        dispatch({
+            type: 'SET_STATE',
+            payload: {
+                respId,
+                codeLabels,
+                response: respObj.responses[respId]
+            }
+        });
     }, []);
 
     /**
@@ -157,18 +170,12 @@ export default function JudgmentApp () {
             }
             { (!allDone && !review) &&
                 <JudgmentBox
-                    respId={ respId }
-                    response={ respObj.responses[respId] }
-                    codes={codes}
                     handleNext={handleNext}
                     resultsObj={respObj.resultsObj}
                 />
             }
             { (!allDone && review) &&
                 <ReviewBox
-                    respId={ respId }
-                    response={ respObj.responses[respId] }
-                    codes={codes}
                     handleNext={handleNext}
                     reviewSet={respObj.reviewSet[respObj.subNums[trial-1]]}
                     matches={respObj.matches[respObj.subNums[trial-1]]}

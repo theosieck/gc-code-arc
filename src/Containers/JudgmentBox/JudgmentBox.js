@@ -6,6 +6,7 @@ import Codes from '../Codes/Codes';
 import Rows from '../Rows/Rows';
 import CommentBox from '../../Components/CommentBox/CommentBox';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 export default function JudgmentBox (props) {
     const [rows, setRows] = useState([]);
@@ -14,6 +15,9 @@ export default function JudgmentBox (props) {
     const [excerpts, setExcerpts] = useState(['','','','','','','','','','','','','','','','']);
     const [doComment, setDoComment] = useState(false);
     const [comment, setComment] = useState('');
+
+    // retrieve stored redux data
+    const codeLabels = useSelector((state) => state.codeLabels);
 
     // initialize base states, if we're getting a specific subject
 	useEffect(() => {
@@ -29,7 +33,7 @@ export default function JudgmentBox (props) {
                 if(codeNum===1) {
                     tmpRows[i] = {
                         text: tmpExcerpts[i],
-                        code: `${i}. ${props.codes[i]}`
+                        code: `${i}. ${codeLabels[i]}`
                     }
                 }
             }
@@ -44,7 +48,7 @@ export default function JudgmentBox (props) {
             setComment(tmpComment);
         }
         console.log(props.resultsObj);
-    }, [props.resultsObj, props.codes]);
+    }, [props.resultsObj, codeLabels]);
 
 
     const divStyle = {
@@ -121,14 +125,11 @@ export default function JudgmentBox (props) {
             <Grid container direction="row" justify="space-between" alignItems="flex-start">
                 <Grid item xs={8} zeroMinWidth>
                 <PresentResp
-                    respId={ props.respId }
-                    response={ props.response }
                     handleSelection={handleSelection}
                 />
                 </Grid>
                 <Grid item xs={4}>
                 <Codes
-                    codes={props.codes}
                     handleButton={handleCodeButton}
                     state={{
                         rows,
