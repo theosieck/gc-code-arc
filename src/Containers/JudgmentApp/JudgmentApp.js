@@ -157,9 +157,9 @@ export default function JudgmentApp() {
 			{!allDone && (
 				<PresentContext
 					scenario={respObj.sContent}
-					competencies={respObj.cDefinitions}
+					competency={respObj.cDefinitions[0]}
 					sTitle={respObj.sTitle}
-					cTitles={respObj.cTitles}
+					cTitle={respObj.cTitles[0]}
 				/>
 			)}
 			{!allDone && !review && <JudgmentBox handleNext={handleNext} resultsObj={respObj.resultsObj} />}

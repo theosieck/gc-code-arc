@@ -1,12 +1,13 @@
-import { Grid } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import Grid from '@mui/material/Grid';
 import PresentResp from '../../Components/PresentResp/PresentResp';
 import Codes from '../../Components/Codes/Codes';
 import Selections from '../../Components/Selections/Selections';
 import CommentBox from '../../Components/CommentBox/CommentBox';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 
 export default function JudgmentBox(props) {
+	const { resultsObj, handleNext } = props;
 	const [rows, setRows] = useState([]);
 	const [activeSelect, setActiveSelect] = useState('');
 	const [codes, setCodes] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
@@ -19,8 +20,8 @@ export default function JudgmentBox(props) {
 
 	// initialize base states, if we're getting a specific subject
 	useEffect(() => {
-		if (props.resultsObj) {
-			const results = props.resultsObj;
+		if (resultsObj) {
+			const results = resultsObj;
 			const tmpCodes = [];
 			const tmpExcerpts = [];
 			const tmpRows = [];
@@ -43,7 +44,7 @@ export default function JudgmentBox(props) {
 			setDoComment(!!tmpComment);
 			setComment(tmpComment);
 		}
-	}, [props.resultsObj, codeLabels]);
+	}, [resultsObj, codeLabels]);
 
 	const divStyle = {
 		marginTop: '50px'
@@ -87,7 +88,6 @@ export default function JudgmentBox(props) {
 
 	const handleDelete = (e, code) => {
 		e.preventDefault();
-		// const code = e.target.id;
 		console.log(e, code);
 		const codeKey = isNaN(code[1]) ? code[0] : code[0] + code[1];
 		setRows(rows.filter((row) => row.code != code));
@@ -105,7 +105,7 @@ export default function JudgmentBox(props) {
 		setComment(comment);
 	};
 
-	const handleNext = (e) => {
+	const handleJudgNext = (e) => {
 		e.preventDefault();
 		setRows([]);
 		setActiveSelect('');
@@ -113,7 +113,7 @@ export default function JudgmentBox(props) {
 		setExcerpts(['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']);
 		setDoComment(false);
 		setComment('');
-		props.handleNext(excerpts, codes, comment);
+		handleNext(excerpts, codes, comment);
 	};
 
 	return (
@@ -124,17 +124,7 @@ export default function JudgmentBox(props) {
 						<PresentResp handleSelection={handleSelection} />
 					</Grid>
 					<Grid item xs={4}>
-						<Codes
-							handleButton={handleCodeButton}
-							state={{
-								rows,
-								activeSelect,
-								codes,
-								excerpts,
-								doComment,
-								comment
-							}}
-						/>
+						<Codes handleCodeButton={handleCodeButton} />
 					</Grid>
 				</Grid>
 			</div>
@@ -151,7 +141,7 @@ export default function JudgmentBox(props) {
 			<div style={{ marginTop: '25px' }}>
 				<Selections rows={rows} handleDelete={handleDelete} showDelete={true} />
 			</div>
-			<button style={{ marginTop: '10px' }} onClick={handleNext}>
+			<button style={{ marginTop: '10px' }} onClick={handleJudgNext}>
 				Next
 			</button>
 		</div>

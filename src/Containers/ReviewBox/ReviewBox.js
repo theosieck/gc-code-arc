@@ -5,12 +5,12 @@ import Matches from '../../Components/Review/Matches';
 import Singles from '../../Components/Review/Singles';
 
 export default function ReviewBox(props) {
+	const { reviewSet, handleNext, matches, judge1Comments, judge2Comments } = props;
 	const [clicked, setClicked] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 	const [matchExcerpts, setMatchExcerpts] = useState([]);
 	// retrieve stored redux data
 	const { respId, response } = useSelector((state) => state.context);
 	const dispatch = useDispatch();
-
 	const divStyle = { marginTop: '50px' };
 
 	const handleSingles = (e) => {
@@ -21,17 +21,17 @@ export default function ReviewBox(props) {
 		setClicked(clicked.map((num, i) => (i == codeNum ? 1 - num : num)));
 	};
 
-	const handleNext = (e) => {
+	const handleRevNext = (e) => {
 		e.preventDefault();
 		const excerpts = [];
 		clicked.forEach((codeNum, i) =>
-			codeNum == 1 ? (excerpts[i] = props.reviewSet[i]) : (excerpts[i] = matchExcerpts[i])
+			codeNum == 1 ? (excerpts[i] = reviewSet[i]) : (excerpts[i] = matchExcerpts[i])
 		);
 		const tmpClicked = [];
 		excerpts.forEach((excerpt, i) => (excerpt ? (tmpClicked[i] = 1) : (excerpts[i] = '')));
 		setClicked([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 		setMatchExcerpts([]);
-		props.handleNext(excerpts, tmpClicked);
+		handleNext(excerpts, tmpClicked);
 	};
 
 	const handleMatches = (e) => {
@@ -39,7 +39,7 @@ export default function ReviewBox(props) {
 		const codeNum = parseInt(isNaN(text[1]) ? text[0] : text[0] + text[1]);
 		const excerptNum = parseInt(text[text.length - 1]);
 		setClicked(clicked.map((num, i) => (i == codeNum ? (num == excerptNum + 1 ? 0 : excerptNum + 1) : num)));
-		matchExcerpts[codeNum] = props.matches[codeNum][excerptNum - 1];
+		matchExcerpts[codeNum] = matches[codeNum][excerptNum - 1];
 		setMatchExcerpts(matchExcerpts);
 	};
 
@@ -59,26 +59,22 @@ export default function ReviewBox(props) {
 				{ReactHtmlParser(response)}
 			</div>
 			<div style={divStyle}>
-				{props.judge1Comments && (
+				{judge1Comments && (
 					<div>
 						<h2>Judge 1's Comments:</h2>
-						<p>{ReactHtmlParser(props.judge1Comments)}</p>
+						<p>{ReactHtmlParser(judge1Comments)}</p>
 					</div>
 				)}
-				{props.judge2Comments && (
+				{judge2Comments && (
 					<div>
 						<h2>Judge 2's Comments:</h2>
-						<p>{ReactHtmlParser(props.judge2Comments)}</p>
+						<p>{ReactHtmlParser(judge2Comments)}</p>
 					</div>
 				)}
-				<Singles
-					excerpts={props.reviewSet}
-				/>
-				<Matches
-					matches={props.matches}
-				/>
+				<Singles excerpts={reviewSet} />
+				<Matches matches={matches} />
 			</div>
-			<button onClick={handleNext}>Next</button>
+			<button onClick={handleRevNext}>Next</button>
 		</div>
 	);
 }

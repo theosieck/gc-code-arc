@@ -22,7 +22,4 @@ const genCodes = (codes, excerpts) => {
 	return codeArray;
 };
 
-export {
-	genMatches,
-	genCodes
-}
+export { genMatches, genCodes };

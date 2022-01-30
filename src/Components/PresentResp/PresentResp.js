@@ -1,8 +1,9 @@
+import { useSelector } from 'react-redux';
 import ReactHtmlParser from 'react-html-parser';
 import Highlightable from 'highlightable';
-import { useSelector } from 'react-redux';
 
 export default function PresentResp(props) {
+	const { handleSelection } = props;
 	// retrieve stored redux data
 	const { respId, response } = useSelector((state) => state.context);
 	return (
@@ -10,7 +11,7 @@ export default function PresentResp(props) {
 			<h2>Case: {respId}</h2>
 			<div
 				onMouseUp={() => {
-					props.handleSelection(window.getSelection().toString());
+					handleSelection(window.getSelection().toString());
 				}}
 			>
 				{ReactHtmlParser(response)}
@@ -18,7 +19,7 @@ export default function PresentResp(props) {
 			{/*<Highlightable
                 ranges={[{'text':ReactHtmlParser(response)}]} 
                 enabled={true}
-                onTextHighlighted={props.handleSelection}
+                onTextHighlighted={handleSelection}
                 highlightStyle={{backgroundColor:'red'}}
                 text={ReactHtmlParser(response)}
             />*/}

@@ -1,7 +1,9 @@
 import { useSelector } from 'react-redux';
-import { Button, Grid } from '@mui/material';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 
 export default function Codes(props) {
+	const { handleCodeButton } = props;
 	// retrieve stored redux data
 	const codeLabels = useSelector((state) => state.context.codeLabels);
 
@@ -12,7 +14,7 @@ export default function Codes(props) {
 
 	const handleButton = (e) => {
 		e.preventDefault();
-		props.handleButton(e.target.textContent);
+		handleCodeButton(e.target.textContent);
 	};
 
 	return (

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 export default function CommentBox(props) {
+	const { handleComment, comment, handleCommentButton } = props;
 	const [error, setError] = useState(undefined);
 	const [commentMessage, setCommentMessage] = useState('');
 
@@ -12,7 +13,7 @@ export default function CommentBox(props) {
 			setError('Please trim your comment down to 125 words');
 		} else {
 			setCommentMessage('Saving comment...');
-			props.handleComment(comment);
+			handleComment(comment);
 			setTimeout(() => {
 				setError(undefined);
 				setCommentMessage('Comment saved');
@@ -33,10 +34,10 @@ export default function CommentBox(props) {
 					maxLength={1000}
 					placeholder={'125 words or less'}
 				>
-					{props.comment}
+					{comment}
 				</textarea>
 				<input type="submit" value="Save Comment" />
-				<button style={{ marginLeft: '20px' }} onClick={props.handleCommentButton}>
+				<button style={{ marginLeft: '20px' }} onClick={handleCommentButton}>
 					Nevermind, I don't have a comment
 				</button>
 			</form>

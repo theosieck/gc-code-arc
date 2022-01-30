@@ -1,12 +1,13 @@
-import { Button } from '@mui/material';
 import { useSelector } from 'react-redux';
+import Button from '@mui/material/Button';
 import Row from '../Row/Row';
 import { genCodes } from '../../utils';
 
-const Singles = (props) => {
+export default function Singles(props) {
+	const { excerpts } = props;
 	const codeLabels = useSelector((state) => state.context.codeLabels);
-	const {handleSingles, clicked} = useSelector((state) => state.reviews);
-	const codes = props.excerpts ? genCodes(codeLabels, props.excerpts) : [];
+	const { handleSingles, clicked } = useSelector((state) => state.reviews);
+	const codes = excerpts ? genCodes(codeLabels, excerpts) : [];
 	return (
 		<div>
 			<h2>Singles</h2>
@@ -28,6 +29,4 @@ const Singles = (props) => {
 			{codes.length <= 0 && <p>No singles to review.</p>}
 		</div>
 	);
-};
-
-export default Singles;
+}
