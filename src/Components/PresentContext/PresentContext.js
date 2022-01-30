@@ -27,23 +27,19 @@ function PresentContext(props) {
         <div>
             <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography>Task {props.sTitle}</Typography>
+                    Task {props.sTitle}
                     {/* <Typography className={classes.heading}>Task {props.sTitle}</Typography> */}
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Typography>
-                    {ReactHtmlParser(props.scenario)}
-                    </Typography>
+                   {ReactHtmlParser(props.scenario)}
                 </AccordionDetails>
             </Accordion>
             <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography>Comp {props.cTitles[0]}</Typography>
+                    Comp {props.cTitles[0]}
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Typography>
                         {ReactHtmlParser(props.competencies[0])}
-                    </Typography>
                 </AccordionDetails>
             </Accordion>
             {/*<Accordion>
