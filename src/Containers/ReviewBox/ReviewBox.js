@@ -35,7 +35,6 @@ export default function ReviewBox(props) {
 
 	const handleMatches = (e) => {
 		const text = e.target.textContent;
-		console.log(text);
 		const codeNum = parseInt(isNaN(text[1]) ? text[0] : text[0] + text[1]);
 		const excerptNum = parseInt(text[text.length - 1]);
 		setClicked(clicked.map((num, i) => (i == codeNum ? (num == excerptNum + 1 ? 0 : excerptNum + 1) : num)));

@@ -1,30 +1,15 @@
 import { Button } from '@mui/material';
 import { useSelector } from 'react-redux';
 import Row from '../Row/Row';
-
-const genMatches = (codes, matches) => {
-	const matchArray = [];
-	matchArray[0] = 0;
-	for (let i = 1; i <= codes.length; i++) {
-		if (matches[i] && matches[i][0] != '' && matches[i][1] != '') {
-			matchArray[0]++;
-			matchArray[i] = [];
-			matchArray[i][0] = [codes[i], matches[i][0]];
-			matchArray[i][1] = [codes[i], matches[i][1]];
-		}
-	}
-	return matchArray;
-};
+import genMatches from '../../utils';
 
 const Matches = (props) => {
 	const codeLabels = useSelector((state) => state.codeLabels);
 	let matches = [];
 	let numMatches = 0;
 	if (props.matches) {
-		console.log(props.matches);
 		matches = genMatches(codeLabels, props.matches, props.setMatches);
 		numMatches = matches[0];
-		console.log(matches);
 	}
 	let displayed = 0;
 	return (

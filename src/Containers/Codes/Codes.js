@@ -4,7 +4,6 @@ import { Button, Grid } from '@mui/material';
 export default function Codes(props) {
 	// retrieve stored redux data
 	const codeLabels = useSelector((state) => state.codeLabels);
-	console.log(codeLabels);
 
 	const divStyles = {
 		border: '1px solid black',

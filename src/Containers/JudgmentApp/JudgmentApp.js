@@ -69,8 +69,6 @@ export default function JudgmentApp() {
 			codesArray[i] = [codes[i], excerpts[i]];
 		}
 
-		console.log(codesArray);
-
 		var dataObj = {
 			sub_num: respObj.subNums[trial - 1],
 			comp_num: respObj.compNum,
@@ -83,7 +81,6 @@ export default function JudgmentApp() {
 			code_scheme: respObj.codeScheme,
 			comment
 		};
-		console.log(dataObj);
 
 		// Save to DB
 		saveData(dataObj);
@@ -140,7 +137,6 @@ export default function JudgmentApp() {
 			},
 			success: function (response) {
 				if (response.type == 'success' && dataObj.sub_num == response.data.sub_num) {
-					console.log('success!');
 					if (key) {
 						localStorage.removeItem(key);
 					}

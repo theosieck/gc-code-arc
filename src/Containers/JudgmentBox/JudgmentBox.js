@@ -36,8 +36,6 @@ export default function JudgmentBox(props) {
 				}
 			}
 			const tmpComment = results['judg_comments'];
-			console.log(tmpCodes);
-			console.log(tmpRows);
 
 			setCodes(tmpCodes);
 			setExcerpts(tmpExcerpts);
@@ -45,7 +43,6 @@ export default function JudgmentBox(props) {
 			setDoComment(!!tmpComment);
 			setComment(tmpComment);
 		}
-		console.log(props.resultsObj);
 	}, [props.resultsObj, codeLabels]);
 
 	const divStyle = {
@@ -90,10 +87,8 @@ export default function JudgmentBox(props) {
 
 	const handleDelete = (e) => {
 		e.preventDefault();
-		console.log('deleting...');
 		const code = e.target.id;
 		const codeKey = isNaN(code[1]) ? code[0] : code[0] + code[1];
-		console.log(code);
 		setRows(rows.filter((row) => row.code != code));
 		setExcerpts(excerpts.map((excerpt, i) => (i == codeKey ? '' : excerpt)));
 		setCodes(codes.map((num, i) => (i == codeKey ? 0 : num)));
