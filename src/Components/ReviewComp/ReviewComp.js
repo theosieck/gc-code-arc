@@ -1,6 +1,6 @@
-import { Button } from "@mui/material";
-import { useSelector } from "react-redux";
-import Row from "../Row/Row";
+import { Button } from '@mui/material';
+import { useSelector } from 'react-redux';
+import Row from '../Row/Row';
 
 const genCodes = (codes, excerpts) => {
 	const codeArray = [];
@@ -26,13 +26,9 @@ const ReviewComp = (props) => {
 					<Row
 						code={
 							<Button
-								variant={
-									props.state.clicked[codeNum] == 1
-										? "contained"
-										: "outlined"
-								}
+								variant={props.state.clicked[codeNum] == 1 ? 'contained' : 'outlined'}
 								onClick={props.handleButton}
-								style={{ display: "block", fontSize: "14px" }}
+								style={{ display: 'block', fontSize: '14px' }}
 							>
 								{codeNum}. {code[0]}
 							</Button>

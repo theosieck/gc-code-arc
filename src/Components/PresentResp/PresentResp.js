@@ -1,6 +1,6 @@
-import ReactHtmlParser from "react-html-parser";
-import Highlightable from "highlightable";
-import { useSelector } from "react-redux";
+import ReactHtmlParser from 'react-html-parser';
+import Highlightable from 'highlightable';
+import { useSelector } from 'react-redux';
 
 export default function PresentResp(props) {
 	// retrieve stored redux data

@@ -1,27 +1,21 @@
-// const { Component } = wp.element;
-
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import ReactHtmlParser from "react-html-parser";
-import Matches from "../../Components/Matches/Matches";
-import ReviewComp from "../../Components/ReviewComp/ReviewComp";
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import ReactHtmlParser from 'react-html-parser';
+import Matches from '../../Components/Matches/Matches';
+import ReviewComp from '../../Components/ReviewComp/ReviewComp';
 
 export default function ReviewBox(props) {
-	const [clicked, setClicked] = useState([
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	]);
+	const [clicked, setClicked] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 	const [matchExcerpts, setMatchExcerpts] = useState([]);
 	// retrieve stored redux data
 	const { respId, response } = useSelector((state) => state);
 
-	const divStyle = { marginTop: "50px" };
+	const divStyle = { marginTop: '50px' };
 
 	const handleSingles = (e) => {
 		e.preventDefault();
 		const codeNum = parseInt(
-			isNaN(e.target.textContent[1])
-				? e.target.textContent[0]
-				: e.target.textContent[0] + e.target.textContent[1]
+			isNaN(e.target.textContent[1]) ? e.target.textContent[0] : e.target.textContent[0] + e.target.textContent[1]
 		);
 		setClicked(clicked.map((num, i) => (i == codeNum ? 1 - num : num)));
 	};
@@ -30,14 +24,10 @@ export default function ReviewBox(props) {
 		e.preventDefault();
 		const excerpts = [];
 		clicked.forEach((codeNum, i) =>
-			codeNum == 1
-				? (excerpts[i] = props.reviewSet[i])
-				: (excerpts[i] = matchExcerpts[i])
+			codeNum == 1 ? (excerpts[i] = props.reviewSet[i]) : (excerpts[i] = matchExcerpts[i])
 		);
 		const tmpClicked = [];
-		excerpts.forEach((excerpt, i) =>
-			excerpt ? (tmpClicked[i] = 1) : (excerpts[i] = "")
-		);
+		excerpts.forEach((excerpt, i) => (excerpt ? (tmpClicked[i] = 1) : (excerpts[i] = '')));
 		setClicked([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 		setMatchExcerpts([]);
 		props.handleNext(excerpts, tmpClicked);
@@ -48,15 +38,7 @@ export default function ReviewBox(props) {
 		console.log(text);
 		const codeNum = parseInt(isNaN(text[1]) ? text[0] : text[0] + text[1]);
 		const excerptNum = parseInt(text[text.length - 1]);
-		setClicked(
-			clicked.map((num, i) =>
-				i == codeNum
-					? num == excerptNum + 1
-						? 0
-						: excerptNum + 1
-					: num
-			)
-		);
+		setClicked(clicked.map((num, i) => (i == codeNum ? (num == excerptNum + 1 ? 0 : excerptNum + 1) : num)));
 		matchExcerpts[codeNum] = props.matches[codeNum][excerptNum - 1];
 		setMatchExcerpts(matchExcerpts);
 	};
@@ -85,7 +67,7 @@ export default function ReviewBox(props) {
 					handleButton={handleSingles}
 					state={{
 						clicked,
-						matchExcerpts,
+						matchExcerpts
 					}}
 				/>
 				{
@@ -94,7 +76,7 @@ export default function ReviewBox(props) {
 						handleButton={handleMatches}
 						state={{
 							clicked,
-							matchExcerpts,
+							matchExcerpts
 						}}
 					/>
 				}

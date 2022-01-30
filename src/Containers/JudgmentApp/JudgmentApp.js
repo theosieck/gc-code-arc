@@ -1,21 +1,16 @@
-// respObj imported from php
-//   respIds responses cDefinitions cTitles sContent sTitle
+/* respObj imported from php */
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-// const { Component } = wp.element;
-//import './judgmentapp.scss';
-
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-
-import PresentContext from "../../Components/PresentContext/PresentContext";
-import ShowEnd from "../../Components/ShowEnd/ShowEnd";
-import ReviewBox from "../ReviewBox/ReviewBox";
-import JudgmentBox from "../JudgmentBox/JudgmentBox";
+import PresentContext from '../../Components/PresentContext/PresentContext';
+import ShowEnd from '../../Components/ShowEnd/ShowEnd';
+import ReviewBox from '../ReviewBox/ReviewBox';
+import JudgmentBox from '../JudgmentBox/JudgmentBox';
 
 export default function JudgmentApp() {
 	console.log(respObj);
 	// initial variables
-	const review = respObj.review == "1";
+	const review = respObj.review == '1';
 	const nTrials = respObj.respIds.length;
 	const numCodes = respObj.numCodes;
 
@@ -41,12 +36,12 @@ export default function JudgmentApp() {
 
 		// store codes, responses, respId in redux
 		dispatch({
-			type: "SET_STATE",
+			type: 'SET_STATE',
 			payload: {
 				respId,
 				codeLabels,
-				response: respObj.responses[respId],
-			},
+				response: respObj.responses[respId]
+			}
 		});
 	}, []);
 
@@ -81,25 +76,25 @@ export default function JudgmentApp() {
 			comp_num: respObj.compNum,
 			task_num: respObj.taskNum,
 			resp_id: respId,
-			judg_type: review ? "rev" : "ind",
+			judg_type: review ? 'rev' : 'ind',
 			judg_time: judgTime,
 			codes: codesArray,
 			judges: respObj.judges,
 			code_scheme: respObj.codeScheme,
-			comment,
+			comment
 		};
 		console.log(dataObj);
 
 		// Save to DB
 		saveData(dataObj);
-		// // Check if there's anything in localStorage - if yes, try to push to DB
+		// Check if there's anything in localStorage - if yes, try to push to DB
 		if (localStorage.length != 0) {
 			var keys = Object.keys(localStorage);
 			keys.forEach((key) => {
 				if (
 					localStorage.getItem(key) != null &&
 					localStorage.getItem(key) != undefined &&
-					localStorage.getItem(key) != ""
+					localStorage.getItem(key) != ''
 				) {
 					var localObj = JSON.parse(localStorage.getItem(key));
 					localObj._ajax_nonce = respObj.nonce;
@@ -130,40 +125,31 @@ export default function JudgmentApp() {
 	 * Saves the given dataObj to the database
 	 */
 	const saveData = (dataObj, key = null) => {
-		dataObj.action = "arc_save_data";
+		dataObj.action = 'arc_save_data';
 		dataObj._ajax_nonce = respObj.nonce;
 
 		jQuery.ajax({
-			type: "post",
-			dataType: "json",
+			type: 'post',
+			dataType: 'json',
 			url: respObj.ajax_url,
 			data: dataObj,
 			error: function (response) {
-				console.log("something went wrong (error case)");
+				console.log('something went wrong (error case)');
 				// save to localStorage
-				localStorage.setItem(
-					JSON.stringify(dataObj.resp_id),
-					JSON.stringify(dataObj)
-				);
+				localStorage.setItem(JSON.stringify(dataObj.resp_id), JSON.stringify(dataObj));
 			},
 			success: function (response) {
-				if (
-					response.type == "success" &&
-					dataObj.sub_num == response.data.sub_num
-				) {
-					console.log("success!");
+				if (response.type == 'success' && dataObj.sub_num == response.data.sub_num) {
+					console.log('success!');
 					if (key) {
 						localStorage.removeItem(key);
 					}
 				} else {
-					console.log("something went wrong");
+					console.log('something went wrong');
 					// save to localStorage
-					localStorage.setItem(
-						JSON.stringify(dataObj.resp_id),
-						JSON.stringify(dataObj)
-					);
+					localStorage.setItem(JSON.stringify(dataObj.resp_id), JSON.stringify(dataObj));
 				}
-			},
+			}
 		});
 	};
 
@@ -181,12 +167,7 @@ export default function JudgmentApp() {
 					cTitles={respObj.cTitles}
 				/>
 			)}
-			{!allDone && !review && (
-				<JudgmentBox
-					handleNext={handleNext}
-					resultsObj={respObj.resultsObj}
-				/>
-			)}
+			{!allDone && !review && <JudgmentBox handleNext={handleNext} resultsObj={respObj.resultsObj} />}
 			{!allDone && review && (
 				<ReviewBox
 					handleNext={handleNext}

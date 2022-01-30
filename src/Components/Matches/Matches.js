@@ -1,19 +1,18 @@
-import { Button } from "@mui/material";
-import { useSelector } from "react-redux";
-import Row from "../Row/Row";
+import { Button } from '@mui/material';
+import { useSelector } from 'react-redux';
+import Row from '../Row/Row';
 
 const genMatches = (codes, matches) => {
 	const matchArray = [];
 	matchArray[0] = 0;
 	for (let i = 1; i <= codes.length; i++) {
-		if (matches[i] && matches[i][0] != "" && matches[i][1] != "") {
+		if (matches[i] && matches[i][0] != '' && matches[i][1] != '') {
 			matchArray[0]++;
 			matchArray[i] = [];
 			matchArray[i][0] = [codes[i], matches[i][0]];
 			matchArray[i][1] = [codes[i], matches[i][1]];
 		}
 	}
-	// setMatches(matchArray);
 	return matchArray;
 };
 
@@ -29,7 +28,7 @@ const Matches = (props) => {
 	}
 	let displayed = 0;
 	return (
-		<div style={{ marginTop: "50px" }}>
+		<div style={{ marginTop: '50px' }}>
 			<h2>Matches:</h2>
 			{numMatches > 0 &&
 				matches.map((match, codeNum) => {
@@ -40,17 +39,12 @@ const Matches = (props) => {
 								<Row
 									code={
 										<Button
-											variant={
-												props.state.clicked[codeNum] ==
-												2
-													? "contained"
-													: "outlined"
-											}
+											variant={props.state.clicked[codeNum] == 2 ? 'contained' : 'outlined'}
 											onClick={props.handleButton}
 											id={0}
 											style={{
-												display: "block",
-												fontSize: "14px",
+												display: 'block',
+												fontSize: '14px'
 											}}
 										>
 											{codeNum}. {match[0][0]} - 1
@@ -61,16 +55,11 @@ const Matches = (props) => {
 								<Row
 									code={
 										<Button
-											variant={
-												props.state.clicked[codeNum] ==
-												3
-													? "contained"
-													: "outlined"
-											}
+											variant={props.state.clicked[codeNum] == 3 ? 'contained' : 'outlined'}
 											onClick={props.handleButton}
 											style={{
-												display: "block",
-												fontSize: "14px",
+												display: 'block',
+												fontSize: '14px'
 											}}
 										>
 											{codeNum}. {match[1][0]} - 2
@@ -81,7 +70,7 @@ const Matches = (props) => {
 								{displayed < numMatches && (
 									<div
 										style={{
-											borderBottom: "1px solid lightgray",
+											borderBottom: '1px solid lightgray'
 										}}
 									></div>
 								)}

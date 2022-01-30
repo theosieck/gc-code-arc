@@ -1,87 +1,20 @@
-// import { Panel, PanelBody, PanelRow } from '@wordpress/components';
-// const { Panel, PanelBody, PanelRow } = wp.components;
-
-//import React from 'react';
-import ReactHtmlParser from "react-html-parser";
-import PropTypes from "prop-types";
-// import { withStyles } from '@emotion/styled';
-import {
-	Accordion,
-	AccordionSummary,
-	AccordionDetails,
-	Typography,
-} from "@mui/material/";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
-const styles = (theme) => ({
-	root: {
-		width: "100%",
-	},
-	heading: {
-		fontSize: theme.typography.pxToRem(24),
-		fontWeight: theme.typography.fontWeightRegular,
-	},
-});
+import ReactHtmlParser from 'react-html-parser';
+import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material/';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 function PresentContext(props) {
-	// const { classes } = props;
 	return (
-		// <div className={classes.root}>
 		<div>
 			<Accordion>
-				<AccordionSummary expandIcon={<ExpandMoreIcon />}>
-					Task {props.sTitle}
-					{/* <Typography className={classes.heading}>Task {props.sTitle}</Typography> */}
-				</AccordionSummary>
-				<AccordionDetails>
-					{ReactHtmlParser(props.scenario)}
-				</AccordionDetails>
+				<AccordionSummary expandIcon={<ExpandMoreIcon />}>Task {props.sTitle}</AccordionSummary>
+				<AccordionDetails>{ReactHtmlParser(props.scenario)}</AccordionDetails>
 			</Accordion>
 			<Accordion>
-				<AccordionSummary expandIcon={<ExpandMoreIcon />}>
-					Comp {props.cTitles[0]}
-				</AccordionSummary>
-				<AccordionDetails>
-					{ReactHtmlParser(props.competencies[0])}
-				</AccordionDetails>
+				<AccordionSummary expandIcon={<ExpandMoreIcon />}>Comp {props.cTitles[0]}</AccordionSummary>
+				<AccordionDetails>{ReactHtmlParser(props.competencies[0])}</AccordionDetails>
 			</Accordion>
-			{/*<Accordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}>Comp {props.cTitles[3]}</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <Typography className={classes.heading}>
-                        {ReactHtmlParser(props.competencies[3])}
-                    </Typography>
-                </AccordionDetails>
-            </Accordion>
-            <Accordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}>Comp {props.cTitles[2]}</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <Typography className={classes.heading}>
-                        {ReactHtmlParser(props.competencies[2])}
-                    </Typography>
-                </AccordionDetails>
-            </Accordion>
-            <Accordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}>Comp {props.cTitles[1]}</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <Typography className={classes.heading}>
-                        {ReactHtmlParser(props.competencies[1])}
-                    </Typography>
-                </AccordionDetails>
-            </Accordion>*/}
 		</div>
 	);
 }
 
-// PresentContext.propTypes = {
-//     classes: PropTypes.object.isRequired,
-// };
-
 export default PresentContext;
-// export default withStyles(styles)(PresentContext);

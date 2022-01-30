@@ -1,6 +1,5 @@
-// const { Component } = wp.element;
-import { useSelector } from "react-redux";
-import { Button, Grid } from "@mui/material";
+import { useSelector } from 'react-redux';
+import { Button, Grid } from '@mui/material';
 
 export default function Codes(props) {
 	// retrieve stored redux data
@@ -8,9 +7,8 @@ export default function Codes(props) {
 	console.log(codeLabels);
 
 	const divStyles = {
-		border: "1px solid black",
-		padding: "5px",
-		// marginLeft: '20px'
+		border: '1px solid black',
+		padding: '5px'
 	};
 
 	const handleButton = (e) => {
@@ -20,12 +18,7 @@ export default function Codes(props) {
 
 	return (
 		<div>
-			<Grid
-				container
-				direction="column"
-				justify="flex-start"
-				alignItems="center"
-			>
+			<Grid container direction="column" justify="flex-start" alignItems="center">
 				<h2>Codes:</h2>
 				<div style={divStyles}>
 					{codeLabels &&
@@ -33,9 +26,9 @@ export default function Codes(props) {
 							<Button
 								variant="outlined"
 								style={{
-									marginBottom: "5px",
-									display: "block",
-									fontSize: "14px",
+									marginBottom: '5px',
+									display: 'block',
+									fontSize: '14px'
 								}}
 								onClick={handleButton}
 							>
@@ -44,7 +37,6 @@ export default function Codes(props) {
 						))}
 				</div>
 			</Grid>
-			{/*this.props.state.clicked==i ? "contained" : "outlined"*/}
 		</div>
 	);
 }

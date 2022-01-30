@@ -1,6 +1,6 @@
-import { Provider } from "react-redux";
-import store from "./store/store";
-import JudgmentApp from "./Containers/JudgmentApp/JudgmentApp";
+import { Provider } from 'react-redux';
+import store from './store/store';
+import JudgmentApp from './Containers/JudgmentApp/JudgmentApp';
 
 export default function App() {
 	return (
