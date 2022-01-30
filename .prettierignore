@@ -1,0 +1,9 @@
+/node_modules/
+/assets/
+.babelrc
+.eslintrc.json
+.gitignore
+.prettierrc.json
+package*.json
+README.md
+webpack.config.js

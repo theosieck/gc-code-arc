@@ -1,48 +1,51 @@
-
-
 // import { Panel, PanelBody, PanelRow } from '@wordpress/components';
 // const { Panel, PanelBody, PanelRow } = wp.components;
 
 //import React from 'react';
-import ReactHtmlParser from 'react-html-parser';
-import PropTypes from 'prop-types';
+import ReactHtmlParser from "react-html-parser";
+import PropTypes from "prop-types";
 // import { withStyles } from '@emotion/styled';
-import {Accordion, AccordionSummary, AccordionDetails, Typography} from '@mui/material/';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {
+	Accordion,
+	AccordionSummary,
+	AccordionDetails,
+	Typography,
+} from "@mui/material/";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-const styles = theme => ({
-    root: {
-        width: '100%',
-    },
-    heading: {
-        fontSize: theme.typography.pxToRem(24),
-        fontWeight: theme.typography.fontWeightRegular,
-    },
+const styles = (theme) => ({
+	root: {
+		width: "100%",
+	},
+	heading: {
+		fontSize: theme.typography.pxToRem(24),
+		fontWeight: theme.typography.fontWeightRegular,
+	},
 });
 
 function PresentContext(props) {
-    // const { classes } = props;
-    return (
-        // <div className={classes.root}>
-        <div>
-            <Accordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    Task {props.sTitle}
-                    {/* <Typography className={classes.heading}>Task {props.sTitle}</Typography> */}
-                </AccordionSummary>
-                <AccordionDetails>
-                   {ReactHtmlParser(props.scenario)}
-                </AccordionDetails>
-            </Accordion>
-            <Accordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    Comp {props.cTitles[0]}
-                </AccordionSummary>
-                <AccordionDetails>
-                        {ReactHtmlParser(props.competencies[0])}
-                </AccordionDetails>
-            </Accordion>
-            {/*<Accordion>
+	// const { classes } = props;
+	return (
+		// <div className={classes.root}>
+		<div>
+			<Accordion>
+				<AccordionSummary expandIcon={<ExpandMoreIcon />}>
+					Task {props.sTitle}
+					{/* <Typography className={classes.heading}>Task {props.sTitle}</Typography> */}
+				</AccordionSummary>
+				<AccordionDetails>
+					{ReactHtmlParser(props.scenario)}
+				</AccordionDetails>
+			</Accordion>
+			<Accordion>
+				<AccordionSummary expandIcon={<ExpandMoreIcon />}>
+					Comp {props.cTitles[0]}
+				</AccordionSummary>
+				<AccordionDetails>
+					{ReactHtmlParser(props.competencies[0])}
+				</AccordionDetails>
+			</Accordion>
+			{/*<Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography className={classes.heading}>Comp {props.cTitles[3]}</Typography>
                 </AccordionSummary>
@@ -72,8 +75,8 @@ function PresentContext(props) {
                     </Typography>
                 </AccordionDetails>
             </Accordion>*/}
-        </div>
-    );
+		</div>
+	);
 }
 
 // PresentContext.propTypes = {

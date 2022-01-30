@@ -1,3 +1,3 @@
-import App from './App';
+import App from "./App";
 
-wp.element.render(<App />, document.querySelector( '.entry-content' ) );
+wp.element.render(<App />, document.querySelector(".entry-content"));
