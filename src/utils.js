@@ -1,5 +1,4 @@
 const genMatches = (codes, matches) => {
-	console.log(codes, matches);
 	const matchArray = [];
 	matchArray[0] = 0;
 	for (let i = 1; i <= codes.length; i++) {
@@ -13,6 +12,17 @@ const genMatches = (codes, matches) => {
 	return matchArray;
 };
 
+const genCodes = (codes, excerpts) => {
+	const codeArray = [];
+	for (let i = 1; i <= codes.length; i++) {
+		if (excerpts[i]) {
+			codeArray[i] = [codes[i], excerpts[i]];
+		}
+	}
+	return codeArray;
+};
+
 export {
-	genMatches
+	genMatches,
+	genCodes
 }

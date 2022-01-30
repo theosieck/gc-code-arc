@@ -24,14 +24,14 @@ const Matches = (props) => {
 						return (
 							<div>
 								<Row
-									code={
-										<MatchButton judgNum={1} state={props.state} codeNum={codeNum} handleButton={props.handleButton} match={match} />
+									component={
+										<MatchButton judgNum={1} codeNum={codeNum} match={match} />
 									}
 									selection={match[0][1]}
 								/>
 								<Row
-									code={
-										<MatchButton judgNum={2} state={props.state} codeNum={codeNum} handleButton={props.handleButton} match={match} />
+									component={
+										<MatchButton judgNum={2} codeNum={codeNum} match={match} />
 									}
 									selection={match[1][1]}
 								/>

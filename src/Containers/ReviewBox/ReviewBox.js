@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactHtmlParser from 'react-html-parser';
-import Matches from '../../Components/Matches/Matches';
-import ReviewComp from '../../Components/ReviewComp/ReviewComp';
+import Matches from '../../Components/Review/Matches';
+import Singles from '../../Components/Review/Singles';
 
 export default function ReviewBox(props) {
 	const [clicked, setClicked] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
@@ -71,22 +71,12 @@ export default function ReviewBox(props) {
 						<p>{ReactHtmlParser(props.judge2Comments)}</p>
 					</div>
 				)}
-				<ReviewComp
+				<Singles
 					excerpts={props.reviewSet}
-					handleButton={handleSingles}
-					state={{
-						clicked
-					}}
 				/>
-				{
-					<Matches
-						matches={props.matches}
-						handleButton={handleMatches}
-						state={{
-							clicked
-						}}
-					/>
-				}
+				<Matches
+					matches={props.matches}
+				/>
 			</div>
 			<button onClick={handleNext}>Next</button>
 		</div>

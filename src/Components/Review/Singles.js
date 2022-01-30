@@ -1,31 +1,19 @@
 import { Button } from '@mui/material';
 import { useSelector } from 'react-redux';
 import Row from '../Row/Row';
+import { genCodes } from '../../utils';
 
-const genCodes = (codes, excerpts) => {
-	const codeArray = [];
-	for (let i = 1; i <= codes.length; i++) {
-		if (excerpts[i]) {
-			codeArray[i] = [codes[i], excerpts[i]];
-		}
-	}
-	return codeArray;
-};
-
-const ReviewComp = (props) => {
+const Singles = (props) => {
 	const codeLabels = useSelector((state) => state.context.codeLabels);
 	const {handleSingles, clicked} = useSelector((state) => state.reviews);
-	let codes = [];
-	if (props.excerpts) {
-		codes = genCodes(codeLabels, props.excerpts);
-	}
+	const codes = props.excerpts ? genCodes(codeLabels, props.excerpts) : [];
 	return (
 		<div>
 			<h2>Singles</h2>
 			{codes.length > 0 &&
 				codes.map((code, codeNum) => (
 					<Row
-						code={
+						component={
 							<Button
 								variant={clicked[codeNum] == 1 ? 'contained' : 'outlined'}
 								onClick={handleSingles}
@@ -42,4 +30,4 @@ const ReviewComp = (props) => {
 	);
 };
 
-export default ReviewComp;
+export default Singles;

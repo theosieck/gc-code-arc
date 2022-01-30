@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
 import PresentResp from '../../Components/PresentResp/PresentResp';
-import Codes from '../Codes/Codes';
-import Rows from '../Rows/Rows';
+import Codes from '../../Components/Codes/Codes';
+import Selections from '../../Components/Selections/Selections';
 import CommentBox from '../../Components/CommentBox/CommentBox';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -85,9 +85,10 @@ export default function JudgmentBox(props) {
 		setActiveSelect(selection);
 	};
 
-	const handleDelete = (e) => {
+	const handleDelete = (e, code) => {
 		e.preventDefault();
-		const code = e.target.id;
+		// const code = e.target.id;
+		console.log(e, code);
 		const codeKey = isNaN(code[1]) ? code[0] : code[0] + code[1];
 		setRows(rows.filter((row) => row.code != code));
 		setExcerpts(excerpts.map((excerpt, i) => (i == codeKey ? '' : excerpt)));
@@ -148,7 +149,7 @@ export default function JudgmentBox(props) {
 				)}
 			</div>
 			<div style={{ marginTop: '25px' }}>
-				<Rows rows={rows} handleDelete={handleDelete} showDelete={true} />
+				<Selections rows={rows} handleDelete={handleDelete} showDelete={true} />
 			</div>
 			<button style={{ marginTop: '10px' }} onClick={handleNext}>
 				Next
