@@ -1,17 +1,19 @@
-import { Button } from '@mui/material';
 import { useSelector } from 'react-redux';
 import Row from '../Row/Row';
-import genMatches from '../../utils';
+import MatchButton from './MatchButton';
+import {genMatches} from '../../utils';
 
 const Matches = (props) => {
-	const codeLabels = useSelector((state) => state.codeLabels);
+	const codeLabels = useSelector((state) => state.context.codeLabels);
 	let matches = [];
 	let numMatches = 0;
-	if (props.matches) {
-		matches = genMatches(codeLabels, props.matches, props.setMatches);
+	// wait for codeLabels to load before doing the matches
+	if (codeLabels && props.matches) {
+		matches = genMatches(codeLabels, props.matches);
 		numMatches = matches[0];
 	}
 	let displayed = 0;
+
 	return (
 		<div style={{ marginTop: '50px' }}>
 			<h2>Matches:</h2>
@@ -23,32 +25,13 @@ const Matches = (props) => {
 							<div>
 								<Row
 									code={
-										<Button
-											variant={props.state.clicked[codeNum] == 2 ? 'contained' : 'outlined'}
-											onClick={props.handleButton}
-											id={0}
-											style={{
-												display: 'block',
-												fontSize: '14px'
-											}}
-										>
-											{codeNum}. {match[0][0]} - 1
-										</Button>
+										<MatchButton judgNum={1} state={props.state} codeNum={codeNum} handleButton={props.handleButton} match={match} />
 									}
 									selection={match[0][1]}
 								/>
 								<Row
 									code={
-										<Button
-											variant={props.state.clicked[codeNum] == 3 ? 'contained' : 'outlined'}
-											onClick={props.handleButton}
-											style={{
-												display: 'block',
-												fontSize: '14px'
-											}}
-										>
-											{codeNum}. {match[1][0]} - 2
-										</Button>
+										<MatchButton judgNum={2} state={props.state} codeNum={codeNum} handleButton={props.handleButton} match={match} />
 									}
 									selection={match[1][1]}
 								/>

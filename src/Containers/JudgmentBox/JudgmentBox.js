@@ -15,7 +15,7 @@ export default function JudgmentBox(props) {
 	const [comment, setComment] = useState('');
 
 	// retrieve stored redux data
-	const codeLabels = useSelector((state) => state.codeLabels);
+	const codeLabels = useSelector((state) => state.context.codeLabels);
 
 	// initialize base states, if we're getting a specific subject
 	useEffect(() => {

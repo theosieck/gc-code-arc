@@ -13,7 +13,8 @@ const genCodes = (codes, excerpts) => {
 };
 
 const ReviewComp = (props) => {
-	const codeLabels = useSelector((state) => state.codeLabels);
+	const codeLabels = useSelector((state) => state.context.codeLabels);
+	const {handleSingles, clicked} = useSelector((state) => state.reviews);
 	let codes = [];
 	if (props.excerpts) {
 		codes = genCodes(codeLabels, props.excerpts);
@@ -26,8 +27,8 @@ const ReviewComp = (props) => {
 					<Row
 						code={
 							<Button
-								variant={props.state.clicked[codeNum] == 1 ? 'contained' : 'outlined'}
-								onClick={props.handleButton}
+								variant={clicked[codeNum] == 1 ? 'contained' : 'outlined'}
+								onClick={handleSingles}
 								style={{ display: 'block', fontSize: '14px' }}
 							>
 								{codeNum}. {code[0]}

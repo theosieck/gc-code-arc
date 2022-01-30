@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ReactHtmlParser from 'react-html-parser';
 import Matches from '../../Components/Matches/Matches';
 import ReviewComp from '../../Components/ReviewComp/ReviewComp';
@@ -8,7 +8,8 @@ export default function ReviewBox(props) {
 	const [clicked, setClicked] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 	const [matchExcerpts, setMatchExcerpts] = useState([]);
 	// retrieve stored redux data
-	const { respId, response } = useSelector((state) => state);
+	const { respId, response } = useSelector((state) => state.context);
+	const dispatch = useDispatch();
 
 	const divStyle = { marginTop: '50px' };
 
@@ -42,6 +43,15 @@ export default function ReviewBox(props) {
 		setMatchExcerpts(matchExcerpts);
 	};
 
+	dispatch({
+		type: 'SET_REVIEW',
+		payload: {
+			handleSingles,
+			handleMatches,
+			clicked
+		}
+	});
+
 	return (
 		<div>
 			<div style={divStyle}>
@@ -65,8 +75,7 @@ export default function ReviewBox(props) {
 					excerpts={props.reviewSet}
 					handleButton={handleSingles}
 					state={{
-						clicked,
-						matchExcerpts
+						clicked
 					}}
 				/>
 				{
@@ -74,8 +83,7 @@ export default function ReviewBox(props) {
 						matches={props.matches}
 						handleButton={handleMatches}
 						state={{
-							clicked,
-							matchExcerpts
+							clicked
 						}}
 					/>
 				}

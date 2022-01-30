@@ -1,4 +1,5 @@
 const genMatches = (codes, matches) => {
+	console.log(codes, matches);
 	const matchArray = [];
 	matchArray[0] = 0;
 	for (let i = 1; i <= codes.length; i++) {

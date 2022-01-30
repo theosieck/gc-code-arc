@@ -36,7 +36,7 @@ export default function JudgmentApp() {
 
 		// store codes, responses, respId in redux
 		dispatch({
-			type: 'SET_STATE',
+			type: 'SET_CONTEXT',
 			payload: {
 				respId,
 				codeLabels,

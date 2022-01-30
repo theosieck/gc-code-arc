@@ -3,7 +3,7 @@ import { Button, Grid } from '@mui/material';
 
 export default function Codes(props) {
 	// retrieve stored redux data
-	const codeLabels = useSelector((state) => state.codeLabels);
+	const codeLabels = useSelector((state) => state.context.codeLabels);
 
 	const divStyles = {
 		border: '1px solid black',

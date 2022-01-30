@@ -1,22 +1,10 @@
-// import { combineReducers } from "@reduxjs/toolkit";
+import { combineReducers } from "@reduxjs/toolkit";
+import contextReducer from "./contextReducer";
+import reviewReducer from "./reviewReducer";
 
-const initialState = {
-	respId: null,
-	response: null,
-	codeLabels: null
-};
+const rootReducer = combineReducers({
+	context: contextReducer,
+	reviews: reviewReducer
+});
 
-export default function rootReducer(state = initialState, action) {
-	const { type, payload } = action;
-	switch (type) {
-		case 'SET_STATE':
-			return {
-				...state,
-				respId: payload.respId,
-				response: payload.response,
-				codeLabels: payload.codeLabels
-			};
-		default:
-			return state;
-	}
-}
+export default rootReducer;

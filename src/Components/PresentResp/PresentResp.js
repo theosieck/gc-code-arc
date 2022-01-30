@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 export default function PresentResp(props) {
 	// retrieve stored redux data
-	const { respId, response } = useSelector((state) => state);
+	const { respId, response } = useSelector((state) => state.context);
 	return (
 		<div>
 			<h2>Case: {respId}</h2>
