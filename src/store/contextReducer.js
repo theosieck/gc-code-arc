@@ -1,6 +1,7 @@
 const initialState = {
 	respId: null,
 	response: null,
+	respTitle: null,
 	codeLabels: null
 };
 
@@ -9,16 +10,17 @@ export default function contextReducer(state = initialState, action) {
 	switch (type) {
 		case 'SET_CONTEXT':
 			return {
-				...state,
 				respId: payload.respId,
 				response: payload.response,
+				respTitle: payload.respTitle,
 				codeLabels: payload.codeLabels
 			};
 		case 'UPDATE_CONTEXT':
 			return {
 				...state,
 				respId: payload.respId,
-				response: payload.response
+				response: payload.response,
+				respTitle: payload.respTitle
 			};
 		default:
 			return state;

@@ -39,7 +39,8 @@ export default function JudgmentApp() {
 			payload: {
 				respId,
 				codeLabels,
-				response: respObj.responses[respId]
+				response: respObj.responses[respId],
+				respTitle: respObj.respTitles[respId]
 			}
 		});
 	}, []);
@@ -122,7 +123,8 @@ export default function JudgmentApp() {
 			type: 'UPDATE_CONTEXT',
 			payload: {
 				respId: newRespId,
-				response: respObj.responses[newRespId]
+				response: respObj.responses[newRespId],
+				respTitle: respObj.respTitles[newRespId]
 			}
 		});
 	};

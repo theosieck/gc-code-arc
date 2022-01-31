@@ -5,10 +5,10 @@ import Highlightable from 'highlightable';
 export default function PresentResp(props) {
 	const { handleSelection } = props;
 	// retrieve stored redux data
-	const { respId, response } = useSelector((state) => state.context);
+	const { response, respTitle } = useSelector((state) => state.context);
 	return (
 		<div>
-			<h2>Case: {respId}</h2>
+			<h2>{respTitle}</h2>
 			<div
 				onMouseUp={() => {
 					handleSelection(window.getSelection().toString());
