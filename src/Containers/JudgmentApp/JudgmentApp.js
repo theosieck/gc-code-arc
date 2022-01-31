@@ -53,7 +53,6 @@ export default function JudgmentApp() {
 	const handleNext = (excerpts, codes, comment) => {
 		// Check whether the user has finished all the trials
 		if (trial < nTrials) {
-			setTrial(trial + 1);
 			getCase();
 		} else {
 			setAllDone(true);
@@ -109,12 +108,23 @@ export default function JudgmentApp() {
 	};
 
 	/**
-	 * getCase: gets the new Response ID
+	 * getCase: gets the new Response ID and dispatches the new stuff to redux
 	 * Parameters: none
 	 * Fires: inside handleNext
 	 */
-	const getCase = () => {
-		setRespId(respObj.respIds[trial - 1]);
+	 const getCase = () => {
+		const newTrial = trial+1;
+		const newRespId = respObj.respIds[trial];	// old trial
+		setTrial(newTrial);
+		setRespId(newRespId);
+		// store codes, responses, respId in redux
+		dispatch({
+			type: 'UPDATE_CONTEXT',
+			payload: {
+				respId: newRespId,
+				response: respObj.responses[newRespId]
+			}
+		});
 	};
 
 	/**

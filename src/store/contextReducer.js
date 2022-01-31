@@ -14,6 +14,12 @@ export default function contextReducer(state = initialState, action) {
 				response: payload.response,
 				codeLabels: payload.codeLabels
 			};
+		case 'UPDATE_CONTEXT':
+			return {
+				...state,
+				respId: payload.respId,
+				response: payload.response
+			};
 		default:
 			return state;
 	}
