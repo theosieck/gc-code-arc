@@ -79,78 +79,78 @@ function gcac_create_table() {
  * Pulls relevant data from the CPTs using given $comp_num, $task_num.
  */
 function arc_pull_data_cpts($comp_num, $task_num, $sub_num, $block_num) {
-		global $gc_project;
+	global $gc_project;
     global $current_user;
     global $wpdb;
     $db = new ARCJudgDB;
-		$judgments_table = $db->get_name();
+    $judgments_table = $db->get_name();
 
-		$results_obj = NULL;
-		// check whether we want one post or all of them
-		if($sub_num) {
-			$sql = "SELECT * FROM `{$judgments_table}` WHERE `sub_num` = {$sub_num} AND `comp_num` = {$comp_num} AND `task_num` = {$task_num} AND `judg_type` = 'ind' AND `user_id` = {$current_user->ID}";
-			$results = $wpdb->get_results($sql);
-			$results_obj = $results[count($results)-1];
-		}
+    $results_obj = NULL;
+    // check whether we want one post or all of them
+    if($sub_num) {
+        $sql = "SELECT * FROM `{$judgments_table}` WHERE `sub_num` = {$sub_num} AND `comp_num` = {$comp_num} AND `task_num` = {$task_num} AND `judg_type` = 'ind' AND `user_id` = {$current_user->ID}";
+        $results = $wpdb->get_results($sql);
+        $results_obj = $results[count($results)-1];
+    }
 
-		// set up meta query
-		$meta_query = array(
-				'relation' => 'AND',
+    // set up meta query
+    $meta_query = array(
+            'relation' => 'AND',
+            array(
+                'key' => 'task_num',
+                'value' => $task_num,
+                'compare' => '=',
+            ),
+            array(
+                'key' => 'project',
+                'value' => $gc_project,
+                'compare' => '=',
+            ),
+        );
+    // echo '<pre>'; print_r($meta_query); echo '</pre>';
+    if($sub_num || $block_num) {
+        // if we have either sub_num or block_num, just redo the whole query
+        $meta_query = array(
+            'relation' => 'AND',
                 array(
                     'key' => 'task_num',
                     'value' => $task_num,
                     'compare' => '=',
                 ),
                 array(
-                    'key' => 'project',
-                    'value' => $gc_project,
-                    'compare' => '=',
-                ),
-			);
-            // echo '<pre>'; print_r($meta_query); echo '</pre>';
-		if($sub_num || $block_num) {
-            // if we have either sub_num or block_num, just redo the whole query
-            $meta_query = array(
-				'relation' => 'AND',
-					array(
-						'key' => 'task_num',
-						'value' => $task_num,
-						'compare' => '=',
-					),
-					array(
+                    'relation' => 'AND',
+                    array(
+                        'key' => 'project',
+                        'value' => $gc_project,
+                        'compare' => '=',
+                    ),
+                    array(
                         'relation' => 'AND',
+                        array(
+                            // if sub_num is given, we don't need the block number because sub_num is more specific
+                            'key' => $sub_num ? 'sub_num' : 'block_num',
+                            'value' => $sub_num ? $sub_num : $block_num,
+                            'compare' => '=',
+                        ),
                         array(
                             'key' => 'project',
                             'value' => $gc_project,
                             'compare' => '=',
-                        ),
-                        array(
-                            'relation' => 'AND',
-                            array(
-			                    // if sub_num is given, we don't need the block number because sub_num is more specific
-                                'key' => $sub_num ? 'sub_num' : 'block_num',
-                                'value' => $sub_num ? $sub_num : $block_num,
-                                'compare' => '=',
-                            ),
-                            array(
-                                'key' => 'project',
-                                'value' => $gc_project,
-                                'compare' => '=',
-                            )
-					),
-				),
-			);
-            // echo '<pre>'; print_r($meta_query); echo '</pre>';
-		}
+                        )
+                ),
+            ),
+        );
+        // echo '<pre>'; print_r($meta_query); echo '</pre>';
+    }
 
-		// ddd($meta_query);
-        // echo $meta_query;
+    // ddd($meta_query);
+    // echo $meta_query;
 
-		$resp_args = array(
-			'numberposts' => -1,
-			'post_type' => 'response',
-			'meta_query' => $meta_query
-		);
+    $resp_args = array(
+        'numberposts' => -1,
+        'post_type' => 'response',
+        'meta_query' => $meta_query
+    );
     $all_responses = get_posts($resp_args);
 		// d($resp_args);
 		// ddd($all_responses);
@@ -227,7 +227,7 @@ function arc_pull_data_cpts($comp_num, $task_num, $sub_num, $block_num) {
         'codeLabels' => $code_labels,
         'numCodes' => $num_codes,
         'codeScheme' => $code_scheme,
-				'resultsObj' => $results_obj
+		'resultsObj' => $results_obj
     );
 
     return $data_for_js;

@@ -42,8 +42,6 @@ genOptions();
 
 // update html elements and page meta
 const updateHTML = () => {
-
-	console.log(optionsList);
 	// update current project
 	currentProj.textContent = `Current Project: ${dataObj.project}`;
 

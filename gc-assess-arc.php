@@ -1,7 +1,7 @@
 <?php
 /*
    Plugin Name: GC Code ARC
-   Version: 1.6.0
+   Version: 1.6.0.1
    Author: Global Cognition
    Author URI: https://www.globalcognition.org
    Description: Serve up responses for feature coding
@@ -160,6 +160,7 @@ function gc_assess_arc_enqueue_scripts() {
           if(is_array($data_for_js)) {
             // there were no errors in pulling the data
             $data_for_js = array_merge($data_for_js,$other_data);
+            // var_dump($data_for_js);
             // pass responses, scenarios, and competencies to Judgment App
             wp_localize_script('gcaa-main-js', 'respObj', $data_for_js);
           } else {
