@@ -9,7 +9,7 @@ export default function ReviewBox(props) {
 	const [clicked, setClicked] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 	const [matchExcerpts, setMatchExcerpts] = useState([]);
 	// retrieve stored redux data
-	const { respId, response } = useSelector((state) => state.context);
+	const { response, respTitle } = useSelector((state) => state.context);
 	const dispatch = useDispatch();
 	const divStyle = { marginTop: '50px' };
 
@@ -55,7 +55,7 @@ export default function ReviewBox(props) {
 	return (
 		<div>
 			<div style={divStyle}>
-				<h2>Case: {respId}</h2>
+				<h2>{respTitle}</h2>
 				{ReactHtmlParser(response)}
 			</div>
 			<div style={divStyle}>

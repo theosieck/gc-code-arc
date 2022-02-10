@@ -39,7 +39,8 @@ export default function JudgmentApp() {
 			payload: {
 				respId,
 				codeLabels,
-				response: respObj.responses[respId]
+				response: respObj.responses[respId],
+				respTitle: respObj.respTitles[respId]
 			}
 		});
 	}, []);
@@ -86,17 +87,20 @@ export default function JudgmentApp() {
 		if (localStorage.length != 0) {
 			var keys = Object.keys(localStorage);
 			keys.forEach((key) => {
-				if (
-					localStorage.getItem(key) != null &&
-					localStorage.getItem(key) != undefined &&
-					localStorage.getItem(key) != ''
-				) {
-					var localObj = JSON.parse(localStorage.getItem(key));
-					localObj._ajax_nonce = respObj.nonce;
-					// Save to DB
-					saveData(localObj, key);
-				} else {
-					console.log(typeof key);
+				// make sure it's one of our keys
+				if (respObj.respIds.includes(parseInt(key))) {
+					if (
+						localStorage.getItem(key) != null &&
+						localStorage.getItem(key) != undefined &&
+						localStorage.getItem(key) != ''
+					) {
+						var localObj = JSON.parse(localStorage.getItem(key));
+						localObj._ajax_nonce = respObj.nonce;
+						// Save to DB
+						saveData(localObj, key);
+					} else {
+						console.log(typeof key);
+					}
 				}
 			});
 		}
@@ -122,7 +126,8 @@ export default function JudgmentApp() {
 			type: 'UPDATE_CONTEXT',
 			payload: {
 				respId: newRespId,
-				response: respObj.responses[newRespId]
+				response: respObj.responses[newRespId],
+				respTitle: respObj.respTitles[newRespId]
 			}
 		});
 	};

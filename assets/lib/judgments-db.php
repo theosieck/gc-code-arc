@@ -171,6 +171,7 @@ function arc_pull_data_cpts($comp_num, $task_num, $sub_num, $block_num) {
         $resp_ids[] = $resp_id;
         $sub_nums[] = $sub_num ? $sub_num : get_field('sub_num', $resp_id);
         $resp_contents[$resp_id] = trim($response->post_content, '""');
+        $resp_titles[$resp_id] = $response->post_title;
     }
 
     $s_args = array(
@@ -223,6 +224,7 @@ function arc_pull_data_cpts($comp_num, $task_num, $sub_num, $block_num) {
         'cTitles' => $c_titles,
         'respIds' => $resp_ids,
         'responses' => $resp_contents,
+        'respTitles' => $resp_titles,
         'subNums' => $sub_nums,
         'codeLabels' => $code_labels,
         'numCodes' => $num_codes,
@@ -282,6 +284,7 @@ function arc_pull_review_data_cpts($judge1, $judge2, $comp_num, $task_num, $bloc
             $resp_ids[] = $resp_id;
             $sub_nums[] = $sub_num;
             $resp_contents[$resp_id] = trim($response->post_content, '""');
+            $resp_titles[$resp_id] = $response->post_title;
             $judge1_comments[$resp_id] = '';
             $judge2_comments[$resp_id] = '';
 
@@ -366,6 +369,7 @@ function arc_pull_review_data_cpts($judge1, $judge2, $comp_num, $task_num, $bloc
         'cTitles' => $c_titles,
         'respIds' => $resp_ids,
         'responses' => $resp_contents,
+        'respTitles' => $resp_titles,
         'subNums' => $sub_nums,
         'reviewSet' => $review_set,
         'matches' => $matches,
