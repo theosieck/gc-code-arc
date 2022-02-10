@@ -88,7 +88,7 @@ function arc_pull_data_cpts($comp_num, $task_num, $sub_num, $block_num) {
     $results_obj = NULL;
     // check whether we want one post or all of them
     if($sub_num) {
-        $sql = "SELECT * FROM `{$judgments_table}` WHERE `sub_num` = {$sub_num} AND `comp_num` = {$comp_num} AND `task_num` = {$task_num} AND `judg_type` = 'ind' AND `user_id` = {$current_user->ID}";
+        $sql = "SELECT * FROM `{$judgments_table}` WHERE `sub_num` = {$sub_num} AND `comp_num` = {$comp_num} AND `task_num` = {$task_num} AND `user_id` = {$current_user->ID}";
         $results = $wpdb->get_results($sql);
         $results_obj = $results[count($results)-1];
     }
@@ -161,7 +161,7 @@ function arc_pull_data_cpts($comp_num, $task_num, $sub_num, $block_num) {
         $total++;
         $responses[] = $response;
     }
-    // echo $total;
+    // echo "<h1>total: {$total}</h1>";
     // if(empty($responses)) {
     //     return "You have assessed all the responses for this block.";
     // }
@@ -246,7 +246,7 @@ function arc_pull_review_data_cpts($judge1, $judge2, $comp_num, $task_num, $bloc
     $db = new ARCJudgDB;
     // echo 'new echo statement';
     // get all the data for the given comp and task nums
-    $where = "comp_num = {$comp_num} AND task_num = {$task_num} AND judg_type = 'ind' AND project = '{$gc_project}'";
+    $where = "comp_num = {$comp_num} AND task_num = {$task_num} AND project = '{$gc_project}'";
     $all_data = $db->get_all_arraya($where);
 
 		// ddd($all_data);

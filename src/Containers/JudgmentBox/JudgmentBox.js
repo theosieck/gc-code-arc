@@ -20,7 +20,7 @@ export default function JudgmentBox(props) {
 
 	// initialize base states, if we're getting a specific subject
 	useEffect(() => {
-		if (resultsObj) {
+		if (resultsObj && codeLabels) {
 			const results = resultsObj;
 			const tmpCodes = [];
 			const tmpExcerpts = [];
@@ -30,6 +30,7 @@ export default function JudgmentBox(props) {
 				tmpCodes[i] = codeNum;
 				tmpExcerpts[i] = results[`excerpt${i}`];
 				if (codeNum === 1) {
+					console.log(codeLabels);
 					tmpRows[i] = {
 						text: tmpExcerpts[i],
 						code: `${i}. ${codeLabels[i]}`

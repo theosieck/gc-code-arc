@@ -201,6 +201,7 @@ function gcac_display_progress() {
 		global $current_user;	// only needed for indep
 		// $ct_pair_page = 'https://local.sandbox/?page_id=6121&';	// local
 		$ct_pair_page = get_site_url() . "/progress/coded-cases/?";	// live
+		$ct_pair_rev_page = get_site_url() . "/progress/reviewed-cases/?";	// live
     $posts_table = $wpdb->prefix . 'posts';
 		$postmeta_table = $wpdb->prefix . 'postmeta';
     $db = new ARCJudgDB;
@@ -303,12 +304,14 @@ function gcac_display_progress() {
 				if($is_indep) {
 					// make url for editing coded responses
 					$list_url = $ct_pair_page . "comp_num={$comp_num}&task_num={$task_num}";
+					$list_rev_url = $ct_pair_rev_page . "comp_num={$comp_num}&task_num={$task_num}";
 				}
 
         // print counts
         echo "{$total_responses} responses to code.<br />";
         echo "{$num_coded_responses} coded responses." . ($is_indep ? " <a href=$list_url>Click to see list</a><br />" : "<br />");
-        echo "{$num_reviewed_responses} reviewed responses.<br /><br />";
+        // echo "{$num_reviewed_responses} reviewed responses.<br /><br />";
+        echo "{$num_reviewed_responses} reviewed responses.". ($is_indep ? " <a href=$list_rev_url>Click to see list</a><br /><br />" : "<br /><br />");
       }
     }
   }
@@ -319,7 +322,9 @@ add_action('genesis_entry_content','gcac_display_progress');
  * display list of coded posts for given task/competency pair
 */
 function gcac_display_ct_pair_list() {
-	if(is_page('progress/coded-cases')) {
+	// if(is_page('progress/coded-cases')) {
+    if(is_page('progress/coded-cases') || is_page('progress/reviewed-cases')) {
+    $is_rev = is_page('progress/reviewed-cases');
 		global $gc_project;
 		global $wpdb;
 		global $current_user;
@@ -335,13 +340,16 @@ function gcac_display_ct_pair_list() {
 		echo "<h2>{$gc_project} Competency {$comp_num} Task {$task_num} Coded Cases</h2>";
 
 		// get list of titles from db
-		$sql = "SELECT DISTINCT `resp_title` FROM `{$judgments_table}` WHERE `resp_title` LIKE 'c{$comp_num}-t{$task_num}-%' AND `user_id` = {$current_user->ID} AND `judg_type` = 'ind' AND `project` = '{$gc_project}'";
+    $judg_type = $is_rev ? 'rev' : 'ind';
+		// $sql = "SELECT DISTINCT `resp_title` FROM `{$judgments_table}` WHERE `resp_title` LIKE 'c{$comp_num}-t{$task_num}-%' AND `user_id` = {$current_user->ID} AND `judg_type` = 'ind AND `project` = '{$gc_project}'";
+		$sql = "SELECT DISTINCT `resp_title` FROM `{$judgments_table}` WHERE `resp_title` LIKE 'c{$comp_num}-t{$task_num}-%' AND `user_id` = {$current_user->ID} AND `judg_type` = '{$judg_type}' AND `project` = '{$gc_project}'";
 		$titles = $wpdb->get_results($sql);
 
 		// loop over titles, displaying post title & excerpt for each
 		foreach($titles as $title_obj) {
 			$title = $title_obj->resp_title;
 			$sub_num = substr($title,strpos($title,'sub')+3,2);
+			// $link = $assess_page . "comp_num={$comp_num}&task_num={$task_num}&sub_num={$sub_num}";
 			$link = $assess_page . "comp_num={$comp_num}&task_num={$task_num}&sub_num={$sub_num}";
 
 			$sql = "SELECT `post_content` FROM `{$posts_table}` WHERE `post_title` = '{$title}'";
