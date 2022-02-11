@@ -1,15 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Grid from '@mui/material/Grid';
-import PresentResp from '../../Components/PresentResp/PresentResp';
-import Codes from '../../Components/Codes/Codes';
-import Selections from '../../Components/Selections/Selections';
-import CommentBox from '../../Components/CommentBox/CommentBox';
+import Selections from '../Components/Selections/Selections';
+import CommentBox from '../Components/CommentBox/CommentBox';
+import PresentRespAndCodes from '../Components/PresentRespAndCodes/PresentRespAndCodes';
 
 export default function JudgmentBox(props) {
 	const { resultsObj, handleNext } = props;
 	const [rows, setRows] = useState([]);
-	const [activeSelect, setActiveSelect] = useState('');
 	const [codes, setCodes] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 	const [excerpts, setExcerpts] = useState(['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']);
 	const [doComment, setDoComment] = useState(false);
@@ -47,46 +44,6 @@ export default function JudgmentBox(props) {
 		}
 	}, [resultsObj, codeLabels]);
 
-	const divStyle = {
-		marginTop: '50px'
-	};
-
-	const handleCodeButton = (code) => {
-		if (code) {
-			const codeKey = isNaN(code[1]) ? code[0] : code[0] + code[1];
-			const selection = activeSelect ? activeSelect : 'No selection';
-			setRows(
-				rows
-					.filter((row) => row.code != code)
-					.concat({
-						text: selection,
-						code: code
-					})
-			);
-			setActiveSelect('');
-			codes[codeKey] = 1;
-			setCodes(codes);
-			excerpts[codeKey] = selection;
-			setExcerpts(excerpts);
-
-			if (document.getSelection) {
-				if (document.getSelection().removeAllRanges) {
-					document.getSelection().removeAllRanges();
-				}
-			} else if (document.selection) {
-				if (document.selection.empty) {
-					document.selection.empty();
-				}
-			} else {
-				console.log('no empty function');
-			}
-		}
-	};
-
-	const handleSelection = (selection) => {
-		setActiveSelect(selection);
-	};
-
 	const handleDelete = (e, code) => {
 		e.preventDefault();
 		console.log(e, code);
@@ -102,14 +59,9 @@ export default function JudgmentBox(props) {
 		setComment('');
 	};
 
-	const handleComment = (comment) => {
-		setComment(comment);
-	};
-
 	const handleJudgNext = (e) => {
 		e.preventDefault();
 		setRows([]);
-		setActiveSelect('');
 		setCodes([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 		setExcerpts(['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']);
 		setDoComment(false);
@@ -119,22 +71,13 @@ export default function JudgmentBox(props) {
 
 	return (
 		<div>
-			<div style={divStyle}>
-				<Grid container direction="row" justify="space-between" alignItems="flex-start">
-					<Grid item xs={8} zeroMinWidth>
-						<PresentResp handleSelection={handleSelection} />
-					</Grid>
-					<Grid item xs={4}>
-						<Codes handleCodeButton={handleCodeButton} />
-					</Grid>
-				</Grid>
-			</div>
+			<PresentRespAndCodes codes={codes} excerpts={excerpts} setCodes={setCodes} setExcerpts={setExcerpts} rows={rows} setRows={setRows} />
 			<div style={{ marginTop: '25px' }}>
 				{!doComment && <button onClick={handleCommentButton}>Add A Comment</button>}
 				{doComment && (
 					<CommentBox
 						comment={comment}
-						handleComment={handleComment}
+						handleComment={setComment}
 						handleCommentButton={handleCommentButton}
 					/>
 				)}

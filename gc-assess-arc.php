@@ -309,9 +309,9 @@ function gcac_display_progress() {
 
         // print counts
         echo "{$total_responses} responses to code.<br />";
-        echo "{$num_coded_responses} coded responses." . ($is_indep ? " <a href=$list_url>Click to see list</a><br />" : "<br />");
+        echo "{$num_coded_responses} coded responses." . ($is_indep ? " <a href=\"{$list_url}\" target=\"_blank\">Click to see list</a><br />" : "<br />");
         // echo "{$num_reviewed_responses} reviewed responses.<br /><br />";
-        echo "{$num_reviewed_responses} reviewed responses.". ($is_indep ? " <a href=$list_rev_url>Click to see list</a><br /><br />" : "<br /><br />");
+        echo "{$num_reviewed_responses} reviewed responses.". ($is_indep ? " <a href=\"{$list_rev_url}\" target=\"_blank\">Click to see list</a><br /><br />" : "<br /><br />");
       }
     }
   }
@@ -356,7 +356,7 @@ function gcac_display_ct_pair_list() {
 			$content_obj = ($wpdb->get_results($sql))[0];
 			$excerpt = substr($content_obj->post_content,0,300);
 
-			echo "<a href={$link}><h3>{$title}</h3></a>";
+			echo "<a href=\"{$link}\" target=\"_blank\"><h3>{$title}</h3></a>";
 			echo "{$excerpt}<br /><br />";
 		}
 	}
