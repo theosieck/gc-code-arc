@@ -73,7 +73,7 @@ export default function JudgmentApp() {
 			comp_num: respObj.compNum,
 			task_num: respObj.taskNum,
 			resp_id: respId,
-			judg_type: review ? 'rev' : 'ind',
+			judg_type: (review || respObj.resultsObj) ? 'rev' : 'ind',
 			judg_time: judgTime,
 			codes: codesArray,
 			judges: respObj.judges,
