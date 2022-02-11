@@ -59,6 +59,15 @@ export default function JudgmentApp() {
 			setAllDone(true);
 		}
 
+		save(excerpts, codes, comment);
+	};
+
+	/**
+	 * handleSave: preserves the state of the response and calls the saveData object
+	 * Parameters:
+	 * Fires: inside handleNext, or when the user clicks 'Save' in individual review
+	 */
+	const handleSave = (excerpts, codes, comment) => {
 		const endDate = Date.now();
 		const endTime = Math.floor(endDate / 1000);
 		const judgTime = endTime - startTime;
@@ -109,7 +118,7 @@ export default function JudgmentApp() {
 		const newStartDate = Date.now();
 		const newStartTime = Math.floor(newStartDate / 1000);
 		setStartTime(newStartTime);
-	};
+	}
 
 	/**
 	 * getCase: gets the new Response ID and dispatches the new stuff to redux
@@ -177,7 +186,7 @@ export default function JudgmentApp() {
 					cTitle={respObj.cTitles[0]}
 				/>
 			)}
-			{!allDone && !review && <JudgmentBox handleNext={handleNext} resultsObj={respObj.resultsObj} />}
+			{!allDone && !review && <JudgmentBox handleNext={handleNext} resultsObj={respObj.resultsObj} handleSave={handleSave} />}
 			{!allDone && review && (
 				<ReviewBox
 					handleNext={handleNext}

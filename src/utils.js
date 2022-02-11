@@ -22,4 +22,26 @@ const genCodes = (codes, excerpts) => {
 	return codeArray;
 };
 
-export { genMatches, genCodes };
+const setUpIndRev = (resultsObj, codeLabels) => {
+	const results = resultsObj;
+	const tmpCodes = [];
+	const tmpExcerpts = [];
+	const tmpRows = [];
+	for (let i = 1; i < 16; i++) {
+		const codeNum = parseInt(results[`code${i}`]);
+		tmpCodes[i] = codeNum;
+		tmpExcerpts[i] = results[`excerpt${i}`];
+		if (codeNum === 1) {
+			console.log(codeLabels);
+			tmpRows[i] = {
+				text: tmpExcerpts[i],
+				code: `${i}. ${codeLabels[i]}`
+			};
+		}
+	}
+	const tmpComment = results['judg_comments'];
+
+	return { tmpCodes, tmpExcerpts, tmpRows, tmpComment };
+}
+
+export { genMatches, genCodes, setUpIndRev };

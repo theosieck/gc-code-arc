@@ -3,9 +3,10 @@ import { useSelector } from 'react-redux';
 import Selections from '../Components/Selections/Selections';
 import CommentBox from '../Components/CommentBox/CommentBox';
 import PresentRespAndCodes from '../Components/PresentRespAndCodes/PresentRespAndCodes';
+import { setUpIndRev } from '../utils';
 
 export default function JudgmentBox(props) {
-	const { resultsObj, handleNext } = props;
+	const { resultsObj, handleNext, handleSave } = props;
 	const [rows, setRows] = useState([]);
 	const [codes, setCodes] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 	const [excerpts, setExcerpts] = useState(['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']);
@@ -18,24 +19,7 @@ export default function JudgmentBox(props) {
 	// initialize base states, if we're getting a specific subject
 	useEffect(() => {
 		if (resultsObj && codeLabels) {
-			const results = resultsObj;
-			const tmpCodes = [];
-			const tmpExcerpts = [];
-			const tmpRows = [];
-			for (let i = 1; i < 16; i++) {
-				const codeNum = parseInt(results[`code${i}`]);
-				tmpCodes[i] = codeNum;
-				tmpExcerpts[i] = results[`excerpt${i}`];
-				if (codeNum === 1) {
-					console.log(codeLabels);
-					tmpRows[i] = {
-						text: tmpExcerpts[i],
-						code: `${i}. ${codeLabels[i]}`
-					};
-				}
-			}
-			const tmpComment = results['judg_comments'];
-
+			const { tmpCodes, tmpExcerpts, tmpRows, tmpComment } = setUpIndRev(resultsObj, codeLabels);
 			setCodes(tmpCodes);
 			setExcerpts(tmpExcerpts);
 			setRows(tmpRows);
@@ -58,6 +42,12 @@ export default function JudgmentBox(props) {
 		setDoComment(!doComment);
 		setComment('');
 	};
+
+	const saveData = (e) => {
+		// TODO add saved message
+		e.preventDefault();
+		handleSave(excerpts, codes, comment);
+	}
 
 	const handleJudgNext = (e) => {
 		e.preventDefault();
@@ -85,9 +75,8 @@ export default function JudgmentBox(props) {
 			<div style={{ marginTop: '25px' }}>
 				<Selections rows={rows} handleDelete={handleDelete} showDelete={true} />
 			</div>
-			<button style={{ marginTop: '10px' }} onClick={handleJudgNext}>
-				Next
-			</button>
+			{!resultsObj && <button style={{ marginTop: '10px' }} onClick={handleJudgNext}>Next</button>}
+			{resultsObj && <button style={{marginTop: '10px'}} onClick={saveData}>Save</button>}
 		</div>
 	);
 }
