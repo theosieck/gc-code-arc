@@ -25,13 +25,14 @@ function gcac_create_table() {
     $sql = "CREATE TABLE $arc_table_name (
         judg_id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
         user_id mediumint(9) UNSIGNED NOT NULL,
-				project tinytext NOT NULL,
+        project tinytext NOT NULL,
         sub_num smallint(5) UNSIGNED NOT NULL,
-				comp_num smallint(2) UNSIGNED NOT NULL,
-				task_num smallint(2) UNSIGNED NOT NULL,
-				resp_title tinytext NOT NULL,
+        comp_num smallint(2) UNSIGNED NOT NULL,
+        task_num smallint(2) UNSIGNED NOT NULL,
+        block_num smallint(2) UNSIGNED,
+        resp_title tinytext NOT NULL,
         judg_type tinytext NOT NULL,
-				judg_time time NOT NULL,
+        judg_time time NOT NULL,
         code_scheme float unsigned NOT NULL,
         code1 smallint(1) UNSIGNED,
         code2 smallint(1) UNSIGNED,
@@ -229,7 +230,8 @@ function arc_pull_data_cpts($comp_num, $task_num, $sub_num, $block_num) {
         'codeLabels' => $code_labels,
         'numCodes' => $num_codes,
         'codeScheme' => $code_scheme,
-		'resultsObj' => $results_obj
+		'resultsObj' => $results_obj,
+        'blockNum' => $block_num
     );
 
     return $data_for_js;

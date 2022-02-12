@@ -84,6 +84,7 @@ export default function JudgmentApp() {
 			sub_num: respObj.subNums[trial - 1],
 			comp_num: respObj.compNum,
 			task_num: respObj.taskNum,
+			block_num: respObj.blockNum || 0,	// save block_num, and if it's undefined it's 0
 			resp_id: respId,
 			judg_type: judgType,
 			judg_time: judgTime,
@@ -92,6 +93,7 @@ export default function JudgmentApp() {
 			code_scheme: respObj.codeScheme,
 			comment
 		};
+		// console.log()
 
 		// Save to DB
 		saveData(dataObj);

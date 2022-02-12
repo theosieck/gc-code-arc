@@ -437,6 +437,7 @@ function arc_save_data() {
     $sub_num = $_POST['sub_num'];
     $comp_num = $_POST['comp_num'];
     $task_num = $_POST['task_num'];
+    $block_num = $_POST['block_num'];
     $resp_id = $_POST['resp_id'];
     $judg_type = $_POST['judg_type'];
     $judg_time = $_POST['judg_time'];
@@ -463,6 +464,7 @@ function arc_save_data() {
         'sub_num' => $sub_num,
         'comp_num' => $comp_num,
         'task_num' => $task_num,
+        'block_num' => $block_num,
         'resp_title' => $title,
         'judg_type' => $judg_type,
         'judg_time'  => $judg_time,
