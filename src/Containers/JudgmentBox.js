@@ -4,6 +4,9 @@ import Selections from '../Components/Selections/Selections';
 import CommentBox from '../Components/CommentBox/CommentBox';
 import PresentRespAndCodes from '../Components/PresentRespAndCodes/PresentRespAndCodes';
 import { setUpIndRev } from '../utils';
+import CircularProgress from '@mui/material/CircularProgress';
+import Fade from '@mui/material/Fade';
+import CheckIcon from '@mui/icons-material/Check';
 
 export default function JudgmentBox(props) {
 	const { resultsObj, handleNext, handleSave } = props;
@@ -12,6 +15,7 @@ export default function JudgmentBox(props) {
 	const [excerpts, setExcerpts] = useState(['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']);
 	const [doComment, setDoComment] = useState(false);
 	const [comment, setComment] = useState('');
+	const [saving, setSaving] = useState(undefined);
 
 	// retrieve stored redux data
 	const codeLabels = useSelector((state) => state.context.codeLabels);
@@ -44,9 +48,13 @@ export default function JudgmentBox(props) {
 	};
 
 	const saveData = (e) => {
-		// TODO add saved message
 		e.preventDefault();
+		setSaving(<CircularProgress />);
 		handleSave(excerpts, codes, comment);
+		setTimeout(() => {
+			setSaving(<CheckIcon color='success' sx={{fontSize: 40}} />);
+			setTimeout(() => {setSaving(undefined)}, 300);
+		}, 1000);
 	}
 
 	const handleJudgNext = (e) => {
@@ -76,7 +84,8 @@ export default function JudgmentBox(props) {
 				<Selections rows={rows} handleDelete={handleDelete} showDelete={true} />
 			</div>
 			{!resultsObj && <button style={{ marginTop: '10px' }} onClick={handleJudgNext}>Next</button>}
-			{resultsObj && <button style={{marginTop: '10px'}} onClick={saveData}>Save</button>}
+			{(!saving && resultsObj) && <button style={{marginTop: '10px'}} onClick={saveData}>Save</button>}
+			{saving && saving}
 		</div>
 	);
 }
