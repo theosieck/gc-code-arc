@@ -59,7 +59,7 @@ export default function JudgmentApp() {
 			setAllDone(true);
 		}
 
-		save(excerpts, codes, comment);
+		handleSave(excerpts, codes, comment);
 	};
 
 	/**
@@ -78,7 +78,7 @@ export default function JudgmentApp() {
 		}
 
 		// set the judgment type to review if this is a review session, or if an individual is reviewing consensus judgments
-		const judgType = (review || respObj.resultsObj.rater1) ? 'rev' : 'ind';
+		const judgType = (review || (respObj.resultsObj && respObj.resultsObj.rater1)) ? 'rev' : 'ind';
 
 		var dataObj = {
 			sub_num: respObj.subNums[trial - 1],
