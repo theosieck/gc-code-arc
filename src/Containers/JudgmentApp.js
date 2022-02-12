@@ -77,12 +77,15 @@ export default function JudgmentApp() {
 			codesArray[i] = [codes[i], excerpts[i]];
 		}
 
+		// set the judgment type to review if this is a review session, or if an individual is reviewing consensus judgments
+		const judgType = (review || respObj.resultsObj.rater1) ? 'rev' : 'ind';
+
 		var dataObj = {
 			sub_num: respObj.subNums[trial - 1],
 			comp_num: respObj.compNum,
 			task_num: respObj.taskNum,
 			resp_id: respId,
-			judg_type: (review || respObj.resultsObj) ? 'rev' : 'ind',
+			judg_type: judgType,
 			judg_time: judgTime,
 			codes: codesArray,
 			judges: respObj.judges,
