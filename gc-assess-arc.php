@@ -210,7 +210,7 @@ function gcac_display_progress() {
     $db = new ARCJudgDB;
     $judgments_table = $db->get_name();
 
-		echo "<h2>{$gc_project} Progress</h2>";
+		echo "<h3>Project: {$gc_project}</h3>";
 
     // get array of competencies
 		$sql = "SELECT DISTINCT `post_title` FROM `{$posts_table}` WHERE `post_status` = 'publish' AND `post_type` = 'competency' AND `ID` IN (SELECT DISTINCT `post_id` FROM `{$postmeta_table}` WHERE `meta_key` = 'comp_part' AND `meta_value` = 0)  ORDER BY `ID`";
