@@ -118,9 +118,12 @@ function gc_update_project() {
 */
 function gc_print_instructions() {
 	global $gc_project;
-	if(strpos($gc_project,'Exemplar') && (is_page('coding') || is_page('consensus'))) {
-		echo "<p>Leave 'Block Number' as 0 for this project.</p>";
-	}
+  if (is_page('coding') || is_page('review')) {
+    echo "<h3>Project: {$gc_project}</h3>";
+    if(strpos($gc_project,'Exemplar')) {
+      echo "<p>Leave 'Block Number' as 0 for this project.</p>";
+    }
+  }
 }
 add_action('genesis_entry_content','gc_print_instructions');
 
