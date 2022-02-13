@@ -25,13 +25,14 @@ function gcac_create_table() {
     $sql = "CREATE TABLE $arc_table_name (
         judg_id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
         user_id mediumint(9) UNSIGNED NOT NULL,
-				project tinytext NOT NULL,
+        project tinytext NOT NULL,
         sub_num smallint(5) UNSIGNED NOT NULL,
-				comp_num smallint(2) UNSIGNED NOT NULL,
-				task_num smallint(2) UNSIGNED NOT NULL,
-				resp_title tinytext NOT NULL,
+        comp_num smallint(2) UNSIGNED NOT NULL,
+        task_num smallint(2) UNSIGNED NOT NULL,
+        block_num smallint(2) UNSIGNED,
+        resp_title tinytext NOT NULL,
         judg_type tinytext NOT NULL,
-				judg_time time NOT NULL,
+        judg_time time NOT NULL,
         code_scheme float unsigned NOT NULL,
         code1 smallint(1) UNSIGNED,
         code2 smallint(1) UNSIGNED,
@@ -88,7 +89,7 @@ function arc_pull_data_cpts($comp_num, $task_num, $sub_num, $block_num) {
     $results_obj = NULL;
     // check whether we want one post or all of them
     if($sub_num) {
-        $sql = "SELECT * FROM `{$judgments_table}` WHERE `sub_num` = {$sub_num} AND `comp_num` = {$comp_num} AND `task_num` = {$task_num} AND `judg_type` = 'ind' AND `user_id` = {$current_user->ID}";
+        $sql = "SELECT * FROM `{$judgments_table}` WHERE `sub_num` = {$sub_num} AND `comp_num` = {$comp_num} AND `task_num` = {$task_num} AND `user_id` = {$current_user->ID}";
         $results = $wpdb->get_results($sql);
         $results_obj = $results[count($results)-1];
     }
@@ -161,7 +162,7 @@ function arc_pull_data_cpts($comp_num, $task_num, $sub_num, $block_num) {
         $total++;
         $responses[] = $response;
     }
-    // echo $total;
+    // echo "<h1>total: {$total}</h1>";
     // if(empty($responses)) {
     //     return "You have assessed all the responses for this block.";
     // }
@@ -229,7 +230,8 @@ function arc_pull_data_cpts($comp_num, $task_num, $sub_num, $block_num) {
         'codeLabels' => $code_labels,
         'numCodes' => $num_codes,
         'codeScheme' => $code_scheme,
-		'resultsObj' => $results_obj
+		'resultsObj' => $results_obj,
+        'blockNum' => $block_num
     );
 
     return $data_for_js;
@@ -246,7 +248,7 @@ function arc_pull_review_data_cpts($judge1, $judge2, $comp_num, $task_num, $bloc
     $db = new ARCJudgDB;
     // echo 'new echo statement';
     // get all the data for the given comp and task nums
-    $where = "comp_num = {$comp_num} AND task_num = {$task_num} AND judg_type = 'ind' AND project = '{$gc_project}'";
+    $where = "comp_num = {$comp_num} AND task_num = {$task_num} AND project = '{$gc_project}'";
     $all_data = $db->get_all_arraya($where);
 
 		// ddd($all_data);

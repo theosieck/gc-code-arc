@@ -1,10 +1,10 @@
 /* respObj imported from php */
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import PresentContext from '../../Components/PresentContext/PresentContext';
-import ShowEnd from '../../Components/ShowEnd/ShowEnd';
-import ReviewBox from '../ReviewBox/ReviewBox';
-import JudgmentBox from '../JudgmentBox/JudgmentBox';
+import PresentContext from '../Components/PresentContext/PresentContext';
+import ShowEnd from '../Components/ShowEnd/ShowEnd';
+import ReviewBox from './ReviewBox';
+import JudgmentBox from './JudgmentBox';
 
 export default function JudgmentApp() {
 	console.log(respObj);
@@ -59,6 +59,15 @@ export default function JudgmentApp() {
 			setAllDone(true);
 		}
 
+		handleSave(excerpts, codes, comment);
+	};
+
+	/**
+	 * handleSave: preserves the state of the response and calls the saveData object
+	 * Parameters:
+	 * Fires: inside handleNext, or when the user clicks 'Save' in individual review
+	 */
+	const handleSave = (excerpts, codes, comment) => {
 		const endDate = Date.now();
 		const endTime = Math.floor(endDate / 1000);
 		const judgTime = endTime - startTime;
@@ -68,18 +77,23 @@ export default function JudgmentApp() {
 			codesArray[i] = [codes[i], excerpts[i]];
 		}
 
+		// set the judgment type to review if this is a review session, or if an individual is reviewing consensus judgments
+		const judgType = (review || (respObj.resultsObj && respObj.resultsObj.rater1)) ? 'rev' : 'ind';
+
 		var dataObj = {
 			sub_num: respObj.subNums[trial - 1],
 			comp_num: respObj.compNum,
 			task_num: respObj.taskNum,
+			block_num: respObj.blockNum || 0,	// save block_num, and if it's undefined it's 0
 			resp_id: respId,
-			judg_type: review ? 'rev' : 'ind',
+			judg_type: judgType,
 			judg_time: judgTime,
 			codes: codesArray,
 			judges: respObj.judges,
 			code_scheme: respObj.codeScheme,
 			comment
 		};
+		// console.log()
 
 		// Save to DB
 		saveData(dataObj);
@@ -109,7 +123,7 @@ export default function JudgmentApp() {
 		const newStartDate = Date.now();
 		const newStartTime = Math.floor(newStartDate / 1000);
 		setStartTime(newStartTime);
-	};
+	}
 
 	/**
 	 * getCase: gets the new Response ID and dispatches the new stuff to redux
@@ -177,7 +191,7 @@ export default function JudgmentApp() {
 					cTitle={respObj.cTitles[0]}
 				/>
 			)}
-			{!allDone && !review && <JudgmentBox handleNext={handleNext} resultsObj={respObj.resultsObj} />}
+			{!allDone && !review && <JudgmentBox handleNext={handleNext} resultsObj={respObj.resultsObj} handleSave={handleSave} />}
 			{!allDone && review && (
 				<ReviewBox
 					handleNext={handleNext}

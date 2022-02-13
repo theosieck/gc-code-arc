@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactHtmlParser from 'react-html-parser';
-import Matches from '../../Components/Review/Matches';
-import Singles from '../../Components/Review/Singles';
+import Matches from '../Components/Review/Matches';
+import Singles from '../Components/Review/Singles';
 
 export default function ReviewBox(props) {
 	const { reviewSet, handleNext, matches, judge1Comments, judge2Comments } = props;
