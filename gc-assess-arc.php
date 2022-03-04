@@ -47,7 +47,7 @@ function gc_set_project() {
 		wp_localize_script('gcaa-set-project-js', 'projObj', $gc_project_data);
 
 		// print headings
-		echo "<h3 id='current-project'>Current Project: {$gc_project}</h3>";
+		// echo "<h3 id='current-project'>Current Project: {$gc_project}</h3>";
 		echo "<h3>Project Options:</h3><div id='project-options'></div>";
 
 		// allow user to add new project

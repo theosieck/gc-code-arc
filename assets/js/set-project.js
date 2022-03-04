@@ -11,11 +11,12 @@ const newOption = (option) => {
 
 	newOption.textContent = option;
 	newOption.style.cssText = 'margin-right:10px;margin-bottom:10px;';
-	newOption.addEventListener('click',() => {
-		dataObj.project = newOption.textContent;
-		currentProj.textContent = `Current Project: ${dataObj.project}`;
-		sendData();
-	});
+	// newOption.addEventListener('click',() => {
+	// 	dataObj.project = newOption.textContent;
+	// 	currentProj.textContent = `Current Project: ${dataObj.project}`;
+	// 	sendData();
+	// });
+	newOption.disabled = true;	// disable button
 
 	removeOption.textContent = "x";
 	removeOption.addEventListener('click',() => {
