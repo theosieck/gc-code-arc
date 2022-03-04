@@ -47,7 +47,7 @@ function gc_set_project() {
 		wp_localize_script('gcaa-set-project-js', 'projObj', $gc_project_data);
 
 		// print headings
-		// echo "<h3 id='current-project'>Current Project: {$gc_project}</h3>";
+		echo "<h3 id='current-project'>Current Global Project: {$gc_project}</h3>";
 		echo "<h3>Project Options:</h3><div id='project-options'></div>";
 
 		// allow user to add new project
@@ -114,13 +114,16 @@ function gc_update_project() {
 }
 
 /**
- * print clarifying info to the user based on which project is active
+ * print clarifying info to the user based on which project is assigned to them
 */
 function gc_print_instructions() {
-	global $gc_project;
+	global $current_user;
   if (is_page('coding') || is_page('review')) {
-    echo "<h3>Project: {$gc_project}</h3>";
-    if(strpos($gc_project,'Exemplar')) {
+    // get the user's assigned project
+    $assigned_project = get_user_meta($current_user->ID, 'project', true);
+    $proj_display = $assigned_project ? $assigned_project : 'None';
+    echo "<h3>Project: {$proj_display}</h3>";
+    if(strpos($assigned_project,'Exemplar')) {
       echo "<p>Leave 'Block Number' as 0 for this project.</p>";
     }
   }
@@ -430,9 +433,15 @@ add_action('wp_ajax_arc_save_data','arc_save_data');
 function arc_save_data() {
     check_ajax_referer('gcaa_scores_nonce');
     global $current_user;
-		global $gc_project;
-    // global $arc_table_postfix;
-    // global $code_table_postfix;
+    // get the user's currently assigned project
+    $assigned_project = get_user_meta($current_user->ID, 'project', true);
+    // if they don't have one, error
+    if (!$assigned_project) {
+      $response['type'] = "No assigned project for this user.";
+      $response = json_encode($response);
+      echo $response;
+      die();
+    }
 
     $db = new ARCJudgDB;
 
@@ -463,7 +472,7 @@ function arc_save_data() {
 
     $db_data = array(
         'user_id' => $current_user->ID,
-				'project' => $gc_project,
+				'project' => $assigned_project,
         'sub_num' => $sub_num,
         'comp_num' => $comp_num,
         'task_num' => $task_num,

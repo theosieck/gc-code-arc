@@ -80,11 +80,16 @@ function gcac_create_table() {
  * Pulls relevant data from the CPTs using given $comp_num, $task_num.
  */
 function arc_pull_data_cpts($comp_num, $task_num, $sub_num, $block_num) {
-	global $gc_project;
     global $current_user;
     global $wpdb;
     $db = new ARCJudgDB;
     $judgments_table = $db->get_name();
+    // get the user's currently assigned project
+    $assigned_project = get_user_meta($current_user->ID, 'project', true);
+    // if they don't have one, error
+    if (!$assigned_project) {
+        return "No assigned project for this user.";
+    }
 
     $results_obj = NULL;
     // check whether we want one post or all of them
@@ -104,7 +109,7 @@ function arc_pull_data_cpts($comp_num, $task_num, $sub_num, $block_num) {
             ),
             array(
                 'key' => 'project',
-                'value' => $gc_project,
+                'value' => $assigned_project,
                 'compare' => '=',
             ),
         );
@@ -122,7 +127,7 @@ function arc_pull_data_cpts($comp_num, $task_num, $sub_num, $block_num) {
                     'relation' => 'AND',
                     array(
                         'key' => 'project',
-                        'value' => $gc_project,
+                        'value' => $assigned_project,
                         'compare' => '=',
                     ),
                     array(
@@ -135,7 +140,7 @@ function arc_pull_data_cpts($comp_num, $task_num, $sub_num, $block_num) {
                         ),
                         array(
                             'key' => 'project',
-                            'value' => $gc_project,
+                            'value' => $assigned_project,
                             'compare' => '=',
                         )
                 ),
@@ -243,12 +248,16 @@ function arc_pull_data_cpts($comp_num, $task_num, $sub_num, $block_num) {
 function arc_pull_review_data_cpts($judge1, $judge2, $comp_num, $task_num, $block_num) {
     global $current_user;
     global $wpdb;
-		global $gc_project;
-
     $db = new ARCJudgDB;
+    // get the user's currently assigned project
+    $assigned_project = get_user_meta($current_user->ID, 'project', true);
+    // if they don't have one, error
+    if (!$assigned_project) {
+        return "No assigned project for this user.";
+    }
     // echo 'new echo statement';
     // get all the data for the given comp and task nums
-    $where = "comp_num = {$comp_num} AND task_num = {$task_num} AND project = '{$gc_project}'";
+    $where = "comp_num = {$comp_num} AND task_num = {$task_num} AND project = '{$assigned_project}'";
     $all_data = $db->get_all_arraya($where);
 
 		// ddd($all_data);

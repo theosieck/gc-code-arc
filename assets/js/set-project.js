@@ -11,12 +11,12 @@ const newOption = (option) => {
 
 	newOption.textContent = option;
 	newOption.style.cssText = 'margin-right:10px;margin-bottom:10px;';
-	// newOption.addEventListener('click',() => {
-	// 	dataObj.project = newOption.textContent;
-	// 	currentProj.textContent = `Current Project: ${dataObj.project}`;
-	// 	sendData();
-	// });
-	newOption.disabled = true;	// disable button
+	newOption.addEventListener('click',() => {
+		dataObj.project = newOption.textContent;
+		currentProj.textContent = `Current Project: ${dataObj.project}`;
+		sendData();
+	});
+	// newOption.disabled = true;	// disable button
 
 	removeOption.textContent = "x";
 	removeOption.addEventListener('click',() => {
@@ -44,7 +44,7 @@ genOptions();
 // update html elements and page meta
 const updateHTML = () => {
 	// update current project
-	currentProj.textContent = `Current Project: ${dataObj.project}`;
+	currentProj.textContent = `Current Global Project: ${dataObj.project}`;
 
 	if(optionsList.indexOf(dataObj.project)>-1) {
 		alert('That project already exists.');
