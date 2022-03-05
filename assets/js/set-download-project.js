@@ -44,7 +44,7 @@ selector.addEventListener('change', (e) => {
 	const selected = options[options.selectedIndex].value;
 	// create a download button for the selected option
 	const downloadButton = document.createElement('button');
-	downloadButton.innerText = `Download ${selected} Data`;
+	downloadButton.innerText = `Prepare ${selected} Data`;
 	downloadButton.addEventListener('click', (e) => {sendReq(e, selected)});
 	// add it to the container
 	buttonCont.appendChild(downloadButton);
@@ -57,7 +57,7 @@ const sendReq = (e, selected) => {
 		type: 'post',
 		url: projDownloadInfo.ajax_url,
 		data: {
-			// project: selected,
+			project: selected,
 			// _ajax_nonce: projDownloadInfo.nonce,
 			// action: 'gcca_do_export'
 		},
