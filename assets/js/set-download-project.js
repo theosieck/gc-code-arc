@@ -42,7 +42,7 @@ selector.addEventListener('change', (e) => {
 	const selected = options[options.selectedIndex].value;
 	// create a download button for the selected option
 	const downloadButton = document.createElement('button');
-	downloadButton.innerText = `Prepare ${selected} Data`;
+	downloadButton.innerText = `Download ${selected} Data`;
 	downloadButton.addEventListener('click', (e) => {sendReq(e, selected)});
 	// add it to the container
 	buttonCont.appendChild(downloadButton);
@@ -51,31 +51,22 @@ selector.addEventListener('change', (e) => {
 // ajax request
 const sendReq = (e, selected) => {
 	e.preventDefault();
-	axios({
+	jQuery.ajax({
+		type: 'post',
 		url: projDownloadInfo.ajax_url,
-		method: 'POST',
 		data: {
 			project: selected,
 			_ajax_nonce: projDownloadInfo.nonce
+		},
+		error: function (e) {console.log('error', e)},
+		success: function (response) {
+			// trigger file download - ref https://medium.com/@drevets/you-cant-prompt-a-file-download-with-the-content-disposition-header-using-axios-xhr-sorry-56577aa706d6
+			const url = window.URL.createObjectURL(new Blob([response]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute('download', 'competency_csv_data.csv');
+			document.body.appendChild(link);
+			link.click();
 		}
-	}).then((response) => {
-		console.log(response);
-	})
-	// jQuery.ajax({
-	// 	type: 'post',
-	// 	url: projDownloadInfo.ajax_url,
-	// 	data: {
-	// 		project: selected,
-	// 		_ajax_nonce: projDownloadInfo.nonce,
-	// 		// action: 'gcca_do_export'
-	// 	},
-	// 	// dataType: 'json',
-	// 	error: function (e) {console.log('error', e)},
-	// 	success: function (response) {
-	// 		// TODO security checks
-	// 		console.log(response);
-	// 		// trigger file download
-	// 		// window.location = 'competency_csv_data.csv';
-	// 	}
-	// });
+	});
 }
