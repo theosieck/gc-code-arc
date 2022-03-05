@@ -1,5 +1,3 @@
-console.log(projDownloadInfo);
-
 // get the body
 const wpContBod = document.getElementById('wpbody-content');
 
@@ -53,16 +51,31 @@ selector.addEventListener('change', (e) => {
 // ajax request
 const sendReq = (e, selected) => {
 	e.preventDefault();
-	jQuery.ajax({
-		type: 'post',
+	axios({
 		url: projDownloadInfo.ajax_url,
+		method: 'POST',
 		data: {
 			project: selected,
-			// _ajax_nonce: projDownloadInfo.nonce,
-			// action: 'gcca_do_export'
-		},
-		dataType: 'json',
-		error: function (e) {console.log(e)},
-		success: function (response) {console.log(response.type)}
-	});
+			_ajax_nonce: projDownloadInfo.nonce
+		}
+	}).then((response) => {
+		console.log(response);
+	})
+	// jQuery.ajax({
+	// 	type: 'post',
+	// 	url: projDownloadInfo.ajax_url,
+	// 	data: {
+	// 		project: selected,
+	// 		_ajax_nonce: projDownloadInfo.nonce,
+	// 		// action: 'gcca_do_export'
+	// 	},
+	// 	// dataType: 'json',
+	// 	error: function (e) {console.log('error', e)},
+	// 	success: function (response) {
+	// 		// TODO security checks
+	// 		console.log(response);
+	// 		// trigger file download
+	// 		// window.location = 'competency_csv_data.csv';
+	// 	}
+	// });
 }

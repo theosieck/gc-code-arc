@@ -24,6 +24,12 @@ function arc_data_export_page() {
 	// get the list of project options
 	$all_projects = explode(',',get_post_meta(get_page_by_title('Manage')->ID,'project_options',true));
 
+	// enqueue axios script
+	wp_enqueue_script(
+		'axios',
+		'https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js'
+	);
+
 	// enqueue script
 	wp_enqueue_script(
 		'gcca-set-download-project-js',
@@ -94,7 +100,7 @@ function gcac_send_data($csv_file,$filename,$headers) {
 
 add_action('wp_ajax_gcca_do_export', 'gcca_do_export');
 function gcca_do_export() {
-	// check_ajax_referrer('gcca_project_download_nonce');
+	// check_ajax_referer('gcca_project_download_nonce');
 
 	$selected_project = $_POST['project'];
 
