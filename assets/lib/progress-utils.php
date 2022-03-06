@@ -112,4 +112,35 @@ function print_ct_info($ct_pair, $tasks, $current_project, $comp_num) {
 	echo "{$num_reviewed_responses} reviewed responses.". ($is_indep ? " <a href=\"{$list_rev_url}\" target=\"_blank\">Click to see list</a><br /><br />" : "<br /><br />");
 }
 
+function set_up_progress_page($current_project) {
+	// display the selected project title
+	echo "<h3 id='gcac-progress-title'>Project: {$current_project}</h3>";
+
+    // get the task-competency pairs
+    $comps_and_tasks = get_comps_and_tasks();
+    $competencies = $comps_and_tasks['competencies'];
+    $ct_pairs = $comps_and_tasks['ct_pairs'];
+    $tasks = $comps_and_tasks['tasks'];
+
+    // iterate over competencies
+    foreach($competencies as $comp_obj) {
+      // get competency name and number
+      $comp_name = $comp_obj->post_title;
+			// ddd($comp_name);
+			$end_tag_location = strpos($comp_name,'-',3);	// location in the string of the '-overall' tag
+			if($end_tag_location) {
+				$comp_name = substr($comp_name,0,$end_tag_location);
+			}
+      $comp_num = substr($comp_name,0,strpos($comp_name,'-'));
+
+      // print competency name
+      echo "<h3>Competency {$comp_name}</h3>";
+
+      // iterate over ct_pairs
+      foreach($ct_pairs[$comp_num] as $ct_pair) {
+        print_ct_info($ct_pair, $tasks, $current_project, $comp_num);
+      }
+    }
+}
+
 ?>

@@ -210,43 +210,66 @@ function gcac_display_progress() {
     // if independent progress, get currently assigned project
     if ($is_indep) {
       $current_project = get_user_meta($current_user->ID, 'project', true);
+      // if none assigned, print that and return
+      if ($current_project==null) {
+        echo "Sorry, you have not been assigned a project.";
+        return;
+      }
     } else {
-      // otherwise, get the list of all projects
+      // otherwise, get the list of all projects and start with the first one
 	    $all_projects = explode(',',get_post_meta(get_page_by_title('Manage')->ID,'project_options',true));
       $current_project = $all_projects[0];
     }
 
-    // display the selected project title
-		echo "<h3>Project: {$current_project}</h3>";
-
-    // get the task-competency pairs
-    $comps_and_tasks = get_comps_and_tasks();
-    $competencies = $comps_and_tasks['competencies'];
-    $ct_pairs = $comps_and_tasks['ct_pairs'];
-    $tasks = $comps_and_tasks['tasks'];
-
-    // iterate over competencies
-    foreach($competencies as $comp_obj) {
-      // get competency name and number
-      $comp_name = $comp_obj->post_title;
-			// ddd($comp_name);
-			$end_tag_location = strpos($comp_name,'-',3);	// location in the string of the '-overall' tag
-			if($end_tag_location) {
-				$comp_name = substr($comp_name,0,$end_tag_location);
-			}
-      $comp_num = substr($comp_name,0,strpos($comp_name,'-'));
-
-      // print competency name
-      echo "<h3>Competency {$comp_name}</h3>";
-
-      // iterate over ct_pairs
-      foreach($ct_pairs[$comp_num] as $ct_pair) {
-        print_ct_info($ct_pair, $tasks, $current_project, $comp_num);
-      }
-    }
+    // set up the page
+    set_up_progress_page($current_project);
   }
 }
 add_action('genesis_entry_content','gcac_display_progress');
+
+/**
+ * enqueue scripts for current judgment team progress
+ */
+function gcac_enqueue_progress_script() {
+  if (is_page('manage/team-progress')) {
+    // enqueue the script
+    wp_enqueue_script(
+      'gcac-progress-js',
+      plugins_url('/assets/js/team-progress.js', __FILE__),
+      ['jquery'],
+      time(),
+      true
+    );
+
+    // get the list of all projects
+    $all_projects = explode(',',get_post_meta(get_page_by_title('Manage')->ID,'project_options',true));
+    // get the admin url and a nonce
+    $data_to_send = array(
+      'ajax_url' => admin_url('admin-ajax.php'),
+      'nonce' => wp_create_nonce('gcca_progress_nonce'),
+      'allProjects' => $all_projects
+    );
+
+    // send to script
+    wp_localize_script('gcac-progress-js', 'progData', $data_to_send);
+  }
+}
+// add_action('wp_enqueue_scripts', 'gcac_enqueue_progress_script');
+
+/**
+ * change the project for team progress on select change
+ */
+function gcac_change_prog_proj() {
+  check_ajax_referer('gcca_progress_nonce');
+
+  $selected_project = $_POST['project'];
+
+  $response['type'] = 'test';
+  $response = $json_encode($response);
+  echo $response;
+  die();
+}
+// add_action('wp_ajax_gcac_change_prog_proj', 'gcac_change_prog_proj');
 
 /**
  * display list of coded posts for given task/competency pair for user's currently assigned project project
