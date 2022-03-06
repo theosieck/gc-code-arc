@@ -249,13 +249,12 @@ function gcac_display_progress() {
 add_action('genesis_entry_content','gcac_display_progress');
 
 /**
- * display list of coded posts for given task/competency pair
+ * display list of coded posts for given task/competency pair for user's currently assigned project project
 */
 function gcac_display_ct_pair_list() {
 	// if(is_page('progress/coded-cases')) {
-    if(is_page('progress/coded-cases') || is_page('progress/reviewed-cases')) {
+  if(is_page('progress/coded-cases') || is_page('progress/reviewed-cases')) {
     $is_rev = is_page('progress/reviewed-cases');
-		global $gc_project;
 		global $wpdb;
 		global $current_user;
 		$posts_table = $wpdb->prefix . 'posts';
@@ -263,16 +262,16 @@ function gcac_display_ct_pair_list() {
     $judgments_table = $db->get_name();
 		// $assess_page = 'https://local.sandbox/?page_id=5252&';	// local
 		$assess_page = get_site_url() . "/coding/live/?";	// live
+    $current_project = get_user_meta($current_user->ID, 'project', true);
 
 		// get url vars
 		$comp_num = sanitize_text_field(get_query_var('comp_num'));
 		$task_num = sanitize_text_field(get_query_var('task_num'));
-		echo "<h2>{$gc_project} Competency {$comp_num} Task {$task_num} Coded Cases</h2>";
+		echo "<h2>{$current_project} Competency {$comp_num} Task {$task_num} Coded Cases</h2>";
 
 		// get list of titles from db
     $judg_type = $is_rev ? 'rev' : 'ind';
-		// $sql = "SELECT DISTINCT `resp_title` FROM `{$judgments_table}` WHERE `resp_title` LIKE 'c{$comp_num}-t{$task_num}-%' AND `user_id` = {$current_user->ID} AND `judg_type` = 'ind AND `project` = '{$gc_project}'";
-		$sql = "SELECT DISTINCT `resp_title` FROM `{$judgments_table}` WHERE `resp_title` LIKE 'c{$comp_num}-t{$task_num}-%' AND `user_id` = {$current_user->ID} AND `judg_type` = '{$judg_type}' AND `project` = '{$gc_project}'";
+		$sql = "SELECT DISTINCT `resp_title` FROM `{$judgments_table}` WHERE `resp_title` LIKE 'c{$comp_num}-t{$task_num}-%' AND `user_id` = {$current_user->ID} AND `judg_type` = '{$judg_type}' AND `project` = '{$current_project}'";
 		$titles = $wpdb->get_results($sql);
 
 		// loop over titles, displaying post title & excerpt for each
