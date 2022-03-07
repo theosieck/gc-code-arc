@@ -114,7 +114,19 @@ function print_ct_info($ct_pair, $tasks, $current_project, $comp_num) {
 
 function set_up_progress_page($current_project) {
 	// display the selected project title
-	echo "<h3 id='gcac-progress-title'>Project: {$current_project}</h3>";
+	echo "<h3 id='gcac-progress-title'>Selected Project: {$current_project}</h3>";
+
+	// // display the selector with the current project selected
+	// $all_projects = explode(',',get_post_meta(get_page_by_title('Manage')->ID,'project_options',true));
+	// echo "<select id='gcac-progress-selector'>";
+	// foreach ($all_projects as $project) {
+	// 	if ($project==$current_project) {
+	// 		echo "<option value='{$project}' selected>{$project}</option>";
+	// 	} else {
+	// 		echo "<option value='{$project}'>{$project}</option>";
+	// 	}
+	// }
+	// echo "</select>";
 
     // get the task-competency pairs
     $comps_and_tasks = get_comps_and_tasks();

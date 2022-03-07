@@ -262,6 +262,22 @@ function gcac_enqueue_progress_script() {
 add_action('wp_enqueue_scripts', 'gcac_enqueue_progress_script');
 
 /**
+ * enqueue styles for current judgment team progress
+ */
+function gcac_enqueue_progress_styles() {
+  if (is_page('manage/team-progress')) {
+    wp_enqueue_style(
+      'gcac-team-progress-css',
+      plugins_url( '/assets/css/team-progress.css', __FILE__ ),
+      [],
+      time(),
+      'all'
+    );
+  }
+}
+add_action('wp_enqueue_scripts', 'gcac_enqueue_progress_styles');
+
+/**
  * change the project for team progress on select change
  */
 function gcac_change_prog_proj() {
