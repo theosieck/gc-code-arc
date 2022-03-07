@@ -222,7 +222,12 @@ function gcac_display_progress() {
     }
 
     // set up the page
+    // create a container
+	  echo "<div id='gcac-progress-page'>";
+    // print the inner content
     set_up_progress_page($current_project);
+    // close the div
+    echo "</div>";
   }
 }
 add_action('genesis_entry_content','gcac_display_progress');
@@ -254,22 +259,25 @@ function gcac_enqueue_progress_script() {
     wp_localize_script('gcac-progress-js', 'progData', $data_to_send);
   }
 }
-// add_action('wp_enqueue_scripts', 'gcac_enqueue_progress_script');
+add_action('wp_enqueue_scripts', 'gcac_enqueue_progress_script');
 
 /**
  * change the project for team progress on select change
  */
 function gcac_change_prog_proj() {
   check_ajax_referer('gcca_progress_nonce');
-
+  // get project from ajax req
   $selected_project = $_POST['project'];
 
-  $response['type'] = 'test';
-  $response = $json_encode($response);
-  echo $response;
+  // set up the page (this will actually just send the new page data back to the front end)
+  set_up_progress_page($selected_project);
+
+  // $response['type'] = $selected_project;
+  // $response = json_encode($response);
+  // echo $response;
   die();
 }
-// add_action('wp_ajax_gcac_change_prog_proj', 'gcac_change_prog_proj');
+add_action('wp_ajax_gcac_change_prog_proj', 'gcac_change_prog_proj');
 
 /**
  * display list of coded posts for given task/competency pair for user's currently assigned project project

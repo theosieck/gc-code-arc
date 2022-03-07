@@ -1,7 +1,7 @@
 console.log(progData);
 
-// get the page title (we'll insert just before this)
-const pageTitle = document.getElementById('gcac-progress-title');
+// get the page content (we'll insert just before this)
+const pageCont = document.getElementById('gcac-progress-page');
 
 // create the selector
 const selector = document.createElement('select');
@@ -13,7 +13,7 @@ progData.allProjects.forEach((project) => {
 });
 
 // append the selector to the start of the body
-pageTitle.before(selector);
+pageCont.before(selector);
 
 // add an event listener
 selector.addEventListener('change', (e) => {
@@ -35,6 +35,10 @@ const sendReq = (selected) => {
 			action: 'gcac_change_prog_proj'
 		},
 		error: function (e) {console.log('error', e)},
-		success: function (resp) {console.log(resp.type)}
+		success: function (response) {
+			console.log(response);
+			// just wipe the page & replace with this
+			document.getElementById('gcac-progress-page').innerHTML = response;
+		}
 	});
 }
