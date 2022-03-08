@@ -26,7 +26,7 @@ export default function Singles(props) {
 						selection={code[1]}
 					/>
 				))}
-			{codes.length <= 0 && <p>No singles to review.</p>}
+			{codes.length <= 0 && <p>No singles to compare.</p>}
 		</div>
 	);
 }
