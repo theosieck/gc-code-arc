@@ -1,7 +1,7 @@
 <?php
 /*
    Plugin Name: GC Code ARC
-   Version: 2.1
+   Version: 2.15
    Author: Global Cognition
    Author URI: https://www.globalcognition.org
    Description: Serve up responses for feature coding
