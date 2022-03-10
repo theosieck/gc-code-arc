@@ -1,0 +1,14 @@
+.entry-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.gcac-progress-selector-div {
+	text-align: end;
+	max-width: 300px;
+}
+
+.gcac-progress-selector-div select {
+	max-width: 175px;
+}

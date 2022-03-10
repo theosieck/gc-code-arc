@@ -16,6 +16,7 @@ const newOption = (option) => {
 		currentProj.textContent = `Current Project: ${dataObj.project}`;
 		sendData();
 	});
+	// newOption.disabled = true;	// disable button
 
 	removeOption.textContent = "x";
 	removeOption.addEventListener('click',() => {
@@ -43,7 +44,7 @@ genOptions();
 // update html elements and page meta
 const updateHTML = () => {
 	// update current project
-	currentProj.textContent = `Current Project: ${dataObj.project}`;
+	currentProj.textContent = `Current Global Project: ${dataObj.project}`;
 
 	if(optionsList.indexOf(dataObj.project)>-1) {
 		alert('That project already exists.');
