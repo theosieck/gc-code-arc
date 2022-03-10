@@ -1,7 +1,7 @@
 <?php
 /*
    Plugin Name: GC Code ARC
-   Version: 2.1
+   Version: 2.15
    Author: Global Cognition
    Author URI: https://www.globalcognition.org
    Description: Serve up responses for feature coding
@@ -119,7 +119,7 @@ function gc_update_project() {
 */
 function gc_print_instructions() {
 	global $current_user;
-  if (is_page('coding') || is_page('review')) {
+  if (is_page('coding') || is_page('compare')) {
     // get the user's assigned project
     $assigned_project = get_user_meta($current_user->ID, 'project', true);
     $proj_display = $assigned_project ? $assigned_project : 'None';
@@ -300,8 +300,8 @@ add_action('wp_ajax_gcac_change_prog_proj', 'gcac_change_prog_proj');
 */
 function gcac_display_ct_pair_list() {
 	// if(is_page('progress/coded-cases')) {
-  if(is_page('progress/coded-cases') || is_page('progress/reviewed-cases')) {
-    $is_rev = is_page('progress/reviewed-cases');
+  if(is_page('progress/coded-cases') || is_page('progress/compared-cases')) {
+    $is_rev = is_page('progress/compared-cases');
 		global $wpdb;
 		global $current_user;
 		$posts_table = $wpdb->prefix . 'posts';

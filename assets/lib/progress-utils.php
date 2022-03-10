@@ -49,7 +49,7 @@ function print_ct_info($ct_pair, $tasks, $current_project, $comp_num) {
 	$judgments_table = $db->get_name();
 	$is_indep = is_page('progress');
 	$ct_pair_page = get_site_url() . "/progress/coded-cases/?";	// live
-	$ct_pair_rev_page = get_site_url() . "/progress/reviewed-cases/?";	// live
+	$ct_pair_rev_page = get_site_url() . "/progress/compared-cases/?";	// live
 
 	// print scenario name
 	$ind = strpos($ct_pair,'t')+1;
@@ -109,7 +109,7 @@ function print_ct_info($ct_pair, $tasks, $current_project, $comp_num) {
 	echo "{$total_responses} responses to code.<br />";
 	echo "{$num_coded_responses} coded responses." . ($is_indep ? " <a href=\"{$list_url}\" target=\"_blank\">Click to see list</a><br />" : "<br />");
 	// echo "{$num_reviewed_responses} reviewed responses.<br /><br />";
-	echo "{$num_reviewed_responses} reviewed responses.". ($is_indep ? " <a href=\"{$list_rev_url}\" target=\"_blank\">Click to see list</a><br /><br />" : "<br /><br />");
+	echo "{$num_reviewed_responses} compared responses.". ($is_indep ? " <a href=\"{$list_rev_url}\" target=\"_blank\">Click to see list</a><br /><br />" : "<br /><br />");
 }
 
 function set_up_progress_page($current_project) {
