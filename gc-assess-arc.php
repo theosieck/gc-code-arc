@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) or die( 'No direct access!' );
 
 include_once 'assets/lib/cpt-setup.php';
 include_once 'assets/lib/judgments-db.php';
-include_once 'assets/lib/post-list-additions.php';
+// include_once 'assets/lib/post-list-additions.php';
 include_once 'assets/lib/progress-utils.php';
 require_once( 'assets/lib/plugin-page.php' );
 
