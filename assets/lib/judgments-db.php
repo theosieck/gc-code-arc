@@ -84,8 +84,16 @@ function arc_pull_data_cpts($comp_num, $task_num, $sub_num, $block_num) {
     global $wpdb;
     $db = new ARCJudgDB;
     $judgments_table = $db->get_name();
+    global $proj_table_postfix;
+	$proj_table_name = $wpdb->prefix . $proj_table_postfix;
     // get the user's currently assigned project
-    $assigned_project = get_user_meta($current_user->ID, 'project', true);
+    $current_project_id = get_user_meta($current_user->ID, 'project', true);
+    $current_project = $wpdb->get_results("SELECT title FROM $proj_table_name WHERE proj_id = $current_project_id");
+    if ($current_project==null) {
+        // return an error
+        return 'No project assigned';
+    }
+    $assigned_project = $current_project[0]->title;
     // if they don't have one, error
     if (!$assigned_project) {
         return "No assigned project for this user.";
@@ -249,12 +257,17 @@ function arc_pull_review_data_cpts($judge1, $judge2, $comp_num, $task_num, $bloc
     global $current_user;
     global $wpdb;
     $db = new ARCJudgDB;
+    global $proj_table_postfix;
+		$proj_table_name = $wpdb->prefix . $proj_table_postfix;
     // get the user's currently assigned project
-    $assigned_project = get_user_meta($current_user->ID, 'project', true);
-    // if they don't have one, error
-    if (!$assigned_project) {
-        return "No assigned project for this user.";
+    $current_project_id = get_user_meta($current_user->ID, 'project', true);
+    $current_project = $wpdb->get_results("SELECT title FROM $proj_table_name WHERE proj_id = $current_project_id");
+    if ($current_project==null) {
+        // return an error
+        return 'No project assigned';
     }
+    $assigned_project = $current_project[0]->title;
+
     // echo 'new echo statement';
     // get all the data for the given comp and task nums
     $where = "comp_num = {$comp_num} AND task_num = {$task_num} AND project = '{$assigned_project}'";

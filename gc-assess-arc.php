@@ -121,10 +121,14 @@ function gc_print_instructions() {
 	global $current_user;
   if (is_page('coding') || is_page('compare')) {
     // get the user's assigned project
-    $assigned_project = get_user_meta($current_user->ID, 'project', true);
-    $proj_display = $assigned_project ? $assigned_project : 'None';
+    global $wpdb;
+		global $proj_table_postfix;
+		$proj_table_name = $wpdb->prefix . $proj_table_postfix;
+    $current_project_id = get_user_meta($current_user->ID, 'project', true);
+    $current_project = $wpdb->get_results("SELECT title FROM $proj_table_name WHERE proj_id = $current_project_id");
+    $proj_display = $current_project ? $current_project[0]->title : 'None';
     echo "<h3>Project: {$proj_display}</h3>";
-    if(strpos($assigned_project,'Exemplar')) {
+    if(strpos($proj_display,'Exemplar')) {
       echo "<p>Leave 'Block Number' as 0 for this project.</p>";
     }
   }
@@ -206,26 +210,31 @@ function gcac_display_progress() {
 		// global $gc_project;
     global $wpdb;
 		global $current_user;	// only needed for indep
+    global $proj_table_postfix;
+		$proj_table_name = $wpdb->prefix . $proj_table_postfix;
 
     // if independent progress, get currently assigned project
     if ($is_indep) {
-      $current_project = get_user_meta($current_user->ID, 'project', true);
+      $current_project_id = get_user_meta($current_user->ID, 'project', true);
+      $current_project = $wpdb->get_results("SELECT title FROM $proj_table_name WHERE proj_id = $current_project_id");
       // if none assigned, print that and return
       if ($current_project==null) {
         echo "Sorry, you have not been assigned a project.";
         return;
       }
+      $current_project_name = $current_project[0]->title;
     } else {
       // otherwise, get the list of all projects and start with the first one
-	    $all_projects = explode(',',get_post_meta(get_page_by_title('Manage')->ID,'project_options',true));
-      $current_project = $all_projects[0];
+	    $sql = "SELECT proj_id,title FROM $proj_table_name";
+		  $all_projects = $wpdb->get_results($sql);
+      $current_project_name = $all_projects[0]->title;
     }
 
     // set up the page
     // create a container
 	  echo "<div id='gcac-progress-page'>";
     // print the inner content
-    set_up_progress_page($current_project);
+    set_up_progress_page($current_project_name);
     // close the div
     echo "</div>";
   }
@@ -237,6 +246,10 @@ add_action('genesis_entry_content','gcac_display_progress');
  */
 function gcac_enqueue_progress_script() {
   if (is_page('manage/team-progress')) {
+    global $wpdb;
+		global $proj_table_postfix;
+		$proj_table_name = $wpdb->prefix . $proj_table_postfix;
+
     // enqueue the script
     wp_enqueue_script(
       'gcac-progress-js',
@@ -246,13 +259,19 @@ function gcac_enqueue_progress_script() {
       true
     );
 
-    // get the list of all projects
-    $all_projects = explode(',',get_post_meta(get_page_by_title('Manage')->ID,'project_options',true));
+    // get all project options from the database
+		$sql = "SELECT title FROM $proj_table_name";
+		$all_projects = $wpdb->get_results($sql);
+    // make nice
+    $nice_all_projects = [];
+    foreach ($all_projects as $project) {
+      array_push($nice_all_projects, $project->title);
+    }
     // get the admin url and a nonce
     $data_to_send = array(
       'ajax_url' => admin_url('admin-ajax.php'),
       'nonce' => wp_create_nonce('gcca_progress_nonce'),
-      'allProjects' => $all_projects
+      'allProjects' => $nice_all_projects
     );
 
     // send to script
@@ -302,23 +321,32 @@ function gcac_display_ct_pair_list() {
 	// if(is_page('progress/coded-cases')) {
   if(is_page('progress/coded-cases') || is_page('progress/compared-cases')) {
     $is_rev = is_page('progress/compared-cases');
-		global $wpdb;
+    global $wpdb;
+		global $proj_table_postfix;
+		$proj_table_name = $wpdb->prefix . $proj_table_postfix;
 		global $current_user;
 		$posts_table = $wpdb->prefix . 'posts';
 		$db = new ARCJudgDB;
     $judgments_table = $db->get_name();
 		// $assess_page = 'https://local.sandbox/?page_id=5252&';	// local
 		$assess_page = get_site_url() . "/coding/live/?";	// live
-    $current_project = get_user_meta($current_user->ID, 'project', true);
+    $current_project_id = get_user_meta($current_user->ID, 'project', true);
+    $current_project = $wpdb->get_results("SELECT title FROM $proj_table_name WHERE proj_id = $current_project_id");
+    // if none assigned, print that and return
+    if ($current_project==null) {
+      echo "Sorry, you have not been assigned a project.";
+      return;
+    }
+    $current_project_name = $current_project[0]->title;
 
 		// get url vars
 		$comp_num = sanitize_text_field(get_query_var('comp_num'));
 		$task_num = sanitize_text_field(get_query_var('task_num'));
-		echo "<h2>{$current_project} Competency {$comp_num} Task {$task_num} Coded Cases</h2>";
+		echo "<h2>{$current_project_name} Competency {$comp_num} Task {$task_num} Coded Cases</h2>";
 
 		// get list of titles from db
     $judg_type = $is_rev ? 'rev' : 'ind';
-		$sql = "SELECT DISTINCT `resp_title` FROM `{$judgments_table}` WHERE `resp_title` LIKE 'c{$comp_num}-t{$task_num}-%' AND `user_id` = {$current_user->ID} AND `judg_type` = '{$judg_type}' AND `project` = '{$current_project}'";
+		$sql = "SELECT DISTINCT `resp_title` FROM `{$judgments_table}` WHERE `resp_title` LIKE 'c{$comp_num}-t{$task_num}-%' AND `user_id` = {$current_user->ID} AND `judg_type` = '{$judg_type}' AND `project` = '{$current_project_name}'";
 		$titles = $wpdb->get_results($sql);
 
 		// loop over titles, displaying post title & excerpt for each
@@ -403,15 +431,20 @@ add_action('wp_ajax_arc_save_data','arc_save_data');
 function arc_save_data() {
     check_ajax_referer('gcaa_scores_nonce');
     global $current_user;
+    global $wpdb;
+		global $proj_table_postfix;
+		$proj_table_name = $wpdb->prefix . $proj_table_postfix;
     // get the user's currently assigned project
-    $assigned_project = get_user_meta($current_user->ID, 'project', true);
+    $current_project_id = get_user_meta($current_user->ID, 'project', true);
+    $current_project = $wpdb->get_results("SELECT title FROM $proj_table_name WHERE proj_id = $current_project_id");
     // if they don't have one, error
-    if (!$assigned_project) {
+    if ($current_project==null) {
       $response['type'] = "No assigned project for this user.";
       $response = json_encode($response);
       echo $response;
       die();
     }
+    $assigned_project = $current_project[0]->title;
 
     $db = new ARCJudgDB;
 
