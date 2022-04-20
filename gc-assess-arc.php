@@ -225,7 +225,7 @@ function gcac_display_progress() {
       $current_project_name = $current_project[0]->title;
     } else {
       // otherwise, get the list of all projects and start with the first one
-	    $sql = "SELECT proj_id,title FROM $proj_table_name";
+	    $sql = "SELECT proj_id,title FROM $proj_table_name WHERE proj_status != 'trash'";
 		  $all_projects = $wpdb->get_results($sql);
       $current_project_name = $all_projects[0]->title;
     }
@@ -260,7 +260,7 @@ function gcac_enqueue_progress_script() {
     );
 
     // get all project options from the database
-		$sql = "SELECT title FROM $proj_table_name";
+		$sql = "SELECT title FROM $proj_table_name WHERE proj_status != 'trash'";
 		$all_projects = $wpdb->get_results($sql);
     // make nice
     $nice_all_projects = [];
