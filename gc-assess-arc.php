@@ -432,20 +432,21 @@ function arc_save_data() {
     check_ajax_referer('gcaa_scores_nonce');
     global $current_user;
     global $wpdb;
+    global $gc_project;
 		global $proj_table_postfix;
 		$proj_table_name = $wpdb->prefix . $proj_table_postfix;
     // get the user's currently assigned project
     $current_project_id = get_user_meta($current_user->ID, 'project', true);
     $current_project = $wpdb->get_results("SELECT title FROM $proj_table_name WHERE proj_id = $current_project_id");
     // if they don't have one, error
-    if ($current_project==null) {
+    if (!$current_project) {
       $response['type'] = "No assigned project for this user.";
       $response = json_encode($response);
       echo $response;
       die();
     }
     $assigned_project = $current_project[0]->title;
-
+// maybe try hardcoding this? or literally using global gc project so it's exactly like last time?
     $db = new ARCJudgDB;
 
     // Get data from React components
@@ -501,12 +502,15 @@ function arc_save_data() {
 		$db_data = array_merge($db_data,$code_data);
 
     $success = $db->insert($db_data);
+    // $response['table-name'] = $db->get_name();
     if($success) {
       $response['type'] = 'success';
       $data = $db->get_all_obj("user_id = {$current_user->ID} AND resp_title = '{$title}'");
       $response['data'] = $data[count($data)-1];
+      // $response['project'] = $assigned_project;
     } else {
       $response['type'] = $success;
+      $response['data'] = $db_data;
     }
     // $response['type'] = 'success';
     $response = json_encode($response);

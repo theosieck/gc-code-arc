@@ -170,6 +170,7 @@ export default function JudgmentApp() {
 					}
 				} else {
 					console.log('something went wrong');
+					console.log(response);
 					// save to localStorage
 					localStorage.setItem(JSON.stringify(dataObj.resp_id), JSON.stringify(dataObj));
 				}
