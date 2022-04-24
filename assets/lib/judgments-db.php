@@ -402,7 +402,8 @@ function arc_pull_review_data_cpts($judge1, $judge2, $comp_num, $task_num, $bloc
         'judges' => [$judge1,$judge2],
         'codeScheme' => $code_scheme,
         'judge1Comments' => $judge1_comments,
-        'judge2Comments' => $judge2_comments
+        'judge2Comments' => $judge2_comments,
+        'blockNum' => $block_num
     );
     return $data_for_js;
 }
