@@ -7,7 +7,8 @@ export default function Singles(props) {
 	const { excerpts } = props;
 	const codeLabels = useSelector((state) => state.context.codeLabels);
 	const { handleSingles, clicked } = useSelector((state) => state.reviews);
-	const codes = excerpts ? genCodes(codeLabels, excerpts) : [];
+	console.log(excerpts, codeLabels);
+	const codes = (excerpts && codeLabels) ? genCodes(codeLabels, excerpts) : [];
 	return (
 		<div>
 			<h2>Singles</h2>

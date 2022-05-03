@@ -23,6 +23,7 @@ export default function JudgmentApp() {
 
 	// set startTime and codes and store in redux on initial render only
 	useEffect(() => {
+		console.log('useEffect fired');
 		// get start date/time
 		const startDate = Date.now();
 		setStartTime(Math.floor(startDate / 1000)); // UNIX time on page load in seconds
