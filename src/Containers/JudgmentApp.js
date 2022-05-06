@@ -18,6 +18,7 @@ export default function JudgmentApp() {
 	const [respId, setRespId] = useState(respObj.respIds[0]); // The ID of the Response being judged
 	const [startTime, setStartTime] = useState(0);
 	const [allDone, setAllDone] = useState(false); // Whether the 'ShowEnd' component should be displayed
+	const [progress, setProgress] = useState(0);	// the proportion of completed trials
 
 	const dispatch = useDispatch();
 
@@ -132,10 +133,12 @@ export default function JudgmentApp() {
 	 * Fires: inside handleNext
 	 */
 	 const getCase = () => {
+		const oldTrial = trial;
 		const newTrial = trial+1;
 		const newRespId = respObj.respIds[trial];	// old trial
 		setTrial(newTrial);
 		setRespId(newRespId);
+		setProgress((oldTrial/nTrials)*100);
 		// store codes, responses, respId in redux
 		dispatch({
 			type: 'UPDATE_CONTEXT',
@@ -193,7 +196,7 @@ export default function JudgmentApp() {
 					cTitle={respObj.cTitles[0]}
 				/>
 			)}
-			{!allDone && !review && <JudgmentBox handleNext={handleNext} resultsObj={respObj.resultsObj} handleSave={handleSave} />}
+			{!allDone && !review && <JudgmentBox handleNext={handleNext} resultsObj={respObj.resultsObj} handleSave={handleSave} progress={progress} />}
 			{!allDone && review && (
 				<ReviewBox
 					handleNext={handleNext}

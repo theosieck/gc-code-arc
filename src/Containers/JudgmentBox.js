@@ -5,11 +5,13 @@ import CommentBox from '../Components/CommentBox/CommentBox';
 import PresentRespAndCodes from '../Components/PresentRespAndCodes/PresentRespAndCodes';
 import { setUpIndRev } from '../utils';
 import CircularProgress from '@mui/material/CircularProgress';
-import Fade from '@mui/material/Fade';
 import CheckIcon from '@mui/icons-material/Check';
+import LinearProgress from '@mui/material/LinearProgress';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 export default function JudgmentBox(props) {
-	const { resultsObj, handleNext, handleSave } = props;
+	const { resultsObj, handleNext, handleSave, progress } = props;
 	const [rows, setRows] = useState([]);
 	const [codes, setCodes] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 	const [excerpts, setExcerpts] = useState(['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']);
@@ -83,7 +85,15 @@ export default function JudgmentBox(props) {
 			<div style={{ marginTop: '25px' }}>
 				<Selections rows={rows} handleDelete={handleDelete} showDelete={true} />
 			</div>
-			{!resultsObj && <button style={{ marginTop: '10px' }} onClick={handleJudgNext}>Next</button>}
+			{!resultsObj && <>
+				<button style={{ marginTop: '10px' }} onClick={handleJudgNext}>Next</button>
+				{/* this section slightly modified from https://mui.com/material-ui/react-progress/#linear-determinate "linear with label" */}
+				<Box sx={{ display: 'flex', alignItems: 'center', marginTop: '25px' }}>
+					<Box sx={{ width: '100%', mr: 1 }}><LinearProgress variant="determinate" value={progress} /></Box>
+					<Box sx={{ minWidth: 45 }}><Typography variant="body2" color="text.secondary" sx={{fontSize: '2rem'}}>{`${Math.floor(progress)}%`}</Typography>
+					</Box>
+				</Box>
+			</>}
 			{(!saving && resultsObj) && <button style={{marginTop: '10px'}} onClick={saveData}>Save</button>}
 			{saving && saving}
 		</div>
