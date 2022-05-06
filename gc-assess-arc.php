@@ -176,8 +176,10 @@ function gc_assess_arc_enqueue_scripts() {
             wp_localize_script('gcaa-main-js', 'respObj', $data_for_js);
           } else {
             // one of the pull_data functions returned an error message
-            echo $data_for_js;
-            // eventually, want to change this so it's not echoing where it currently is
+            $data_for_js = array(
+              'errorMsg' => $data_for_js
+            );
+            wp_localize_script('gcaa-main-js', 'respObj', $data_for_js);
           }
       } else {
           echo "please log in";

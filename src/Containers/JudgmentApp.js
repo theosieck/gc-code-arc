@@ -7,6 +7,15 @@ import ReviewBox from './ReviewBox';
 import JudgmentBox from './JudgmentBox';
 
 export default function JudgmentApp() {
+	// preliminary error checking
+	try {
+		if (!respObj) throw "Error: No data received from server.";
+		if (respObj.errorMsg) return <p>{respObj.errorMsg}</p>;
+		if (!respObj.respIds) throw "Error: No responses to show.";
+	} catch (e) {
+		return <p>{e}</p>;
+	}
+
 	console.log(respObj);
 	// initial variables
 	const review = respObj.review == '1';
@@ -19,6 +28,7 @@ export default function JudgmentApp() {
 	const [startTime, setStartTime] = useState(0);
 	const [allDone, setAllDone] = useState(false); // Whether the 'ShowEnd' component should be displayed
 	const [progress, setProgress] = useState(0);	// the proportion of completed trials
+	const [error, setError] = useState(false);
 
 	const dispatch = useDispatch();
 
@@ -181,6 +191,13 @@ export default function JudgmentApp() {
 			}
 		});
 	};
+
+	/**
+	 * Displays error
+	 */
+	if (error) return (
+		<p>{error}</p>
+	);
 
 	/**
 	 * Renders the components for JudgmentApp

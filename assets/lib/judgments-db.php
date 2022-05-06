@@ -340,7 +340,15 @@ function arc_pull_review_data_cpts($judge1, $judge2, $comp_num, $task_num, $bloc
                 }
             }
         } else {
-            echo `Need ratings from both judges for subject {$sub_num}.`;
+            // we're missing ratings from at least one judge, so let's check who
+            if ($sub[$judge1]) {
+                return "Missing ratings from Judge 2";
+            } else if ($sub[$judge2]) {
+                return "Missing ratings from Judge 1";
+            } else {
+                return "Missing ratings from both judges.";
+            }
+            // return `Need ratings from both judges for subject {$sub_num}.`;
         }
     }
 
