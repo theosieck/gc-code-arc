@@ -8,7 +8,7 @@ export default function MatchButton(props) {
 	return (
 		<Button
 			variant={clicked[codeNum] == judgNum + 1 ? 'contained' : 'outlined'}
-			onClick={handleMatches}
+			onClick={() => {handleMatches(codeNum,judgNum)}}
 			id={judgNum - 1}
 			style={{
 				display: 'block',

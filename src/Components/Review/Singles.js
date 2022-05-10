@@ -1,5 +1,8 @@
 import { useSelector } from 'react-redux';
 import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import CloseIcon from '@mui/icons-material/Close';
+import CheckIcon from '@mui/icons-material/Check';
 import Row from '../Row/Row';
 import { genCodes } from '../../utils';
 
@@ -14,18 +17,34 @@ export default function Singles(props) {
 			<h2>Singles</h2>
 			{codes.length > 0 &&
 				codes.map((code, codeNum) => (
-					<Row
-						component={
+					<Grid container alignItems="center" style={{ marginBottom: '10px' }} spacing={1}>
+						<Grid container item alignItems="center" justifyContent="space-around" xs={1.5} zeroMinWidth>
 							<Button
 								variant={clicked[codeNum] == 1 ? 'contained' : 'outlined'}
-								onClick={handleSingles}
-								style={{ display: 'block', fontSize: '14px' }}
+								onClick={() => {handleSingles(codeNum,1)}}
+								// style={{ display: 'block', fontSize: '14px' }}
+								color="success"
+								size="large"
 							>
-								{codeNum}. {code[0]}
+								<CheckIcon onClick={() => {handleSingles(codeNum,1)}} />
 							</Button>
-						}
-						selection={code[1]}
-					/>
+							<Button
+								variant={clicked[codeNum] == 0 ? 'contained' : 'outlined'}
+								onClick={() => {handleSingles(codeNum,0)}}
+								// style={{ display: 'block', fontSize: '14px' }}
+								color="error"
+								size="large"
+							>
+								<CloseIcon onClick={() => {handleSingles(codeNum,0)}} />
+							</Button>
+						</Grid>
+						<Grid item xs={2.5} zeroMinWidth>
+							{codeNum}. {code[0]}
+						</Grid>
+						<Grid item xs={8} zeroMinWidth>
+							{code[1]}
+						</Grid>
+					</Grid>
 				))}
 			{codes.length <= 0 && <p>No singles to compare.</p>}
 		</div>

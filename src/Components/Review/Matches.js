@@ -18,8 +18,9 @@ export default function Matches(props) {
 	return (
 		<div style={{ marginTop: '50px' }}>
 			<h2>Matches:</h2>
-			{numMatches > 0 &&
-				matchedCodes.map((match, codeNum) => {
+			{numMatches > 0 && <>
+				<p>Select one match from each pair to set the excerpt for that code.</p>
+				{matchedCodes.map((match, codeNum) => {
 					if (codeNum > 0) {
 						displayed++;
 						return (
@@ -43,6 +44,7 @@ export default function Matches(props) {
 						);
 					}
 				})}
+				</>}
 			{numMatches <= 0 && <p>No matches to display.</p>}
 		</div>
 	);
