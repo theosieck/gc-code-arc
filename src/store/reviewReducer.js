@@ -1,7 +1,8 @@
 const initialState = {
 	clicked: null,
 	handleMatches: null,
-	handleSingles: null
+	handleSingles: null,
+	completedCases: []
 };
 
 export default function reviewReducer(state = initialState, action) {
@@ -11,6 +12,13 @@ export default function reviewReducer(state = initialState, action) {
 			return {
 				...state,
 				...payload
+			};
+		case 'COMPLETE_CASE':
+			const completedCases = state.completedCases;
+			completedCases.push(payload);
+			return {
+				...state,
+				completedCases
 			};
 		default:
 			return state;

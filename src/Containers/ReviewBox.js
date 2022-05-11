@@ -4,6 +4,7 @@ import ReactHtmlParser from 'react-html-parser';
 import Matches from '../Components/Review/Matches';
 import Singles from '../Components/Review/Singles';
 import { Alert } from '@mui/material';
+import ReviewHeader from '../Components/Review/ReviewHeader';
 
 export default function ReviewBox(props) {
 	// reviewSet = singles, matches = matches
@@ -52,6 +53,11 @@ export default function ReviewBox(props) {
 		// reset state
 		setClicked([-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]);
 		setMatchExcerpts([]);
+		// store the completed case in redux
+		dispatch({
+			type: 'COMPLETE_CASE',
+			payload: respTitle
+		});
 		// pass the excerpts and chosen codes up
 		handleNext(excerpts, tmpClicked);
 	};
@@ -77,7 +83,7 @@ export default function ReviewBox(props) {
 	return (
 		<div>
 			<div style={divStyle}>
-				<h2>{respTitle}</h2>
+				<ReviewHeader />
 				{ReactHtmlParser(response)}
 			</div>
 			<div style={divStyle}>
