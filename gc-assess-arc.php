@@ -530,19 +530,19 @@ function arc_reset_data() {
   check_ajax_referer('gc_reset_comp_nonce');
 
   global $wpdb;
-  global $proj_table_postfix;
-	$proj_table_name = $wpdb->prefix . $proj_table_postfix;
+  global $code_table_postfix;
+	$code_table_name = $wpdb->prefix . $code_table_postfix;
 
   // get completed cases from request
   $cases_to_remove = $_POST['completed_cases'];
 
   // remove the most recent occurrence of each one from the database
   foreach ($cases_to_remove as $case_title) {
-    $sql = "DELETE FROM $proj_table_name WHERE resp_title = $case_title ORDER BY judg_id DESC LIMIT 1";
+    $sql = "DELETE FROM $code_table_name WHERE resp_title = '$case_title' ORDER BY judg_id DESC LIMIT 1";
     $result = $wpdb->query($wpdb->prepare($sql));
     if (!$result) {
       $response['type'] = 'error';
-      $response['message'] = "Something went wrong removing case $case_title.";
+      $response['message'] = "Something went wrong removing case $case_title. " . $result;
       $response = json_encode($response);
       echo $response;
       die();

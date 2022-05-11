@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Button, Grid } from '@mui/material';
+import { Alert, Button, Grid } from '@mui/material';
 
-export default function ReviewHeader () {
-	const { respTitle } = useSelector((state) => state.context);
+export default function RestartReview () {
+	const [error, setError] = useState(false);
 	const { completedCases } = useSelector((state) => state.reviews);
 
 	const restartComparison = () => {
@@ -10,6 +11,7 @@ export default function ReviewHeader () {
 		if (completedCases.length<1) window.location.reload();
 
 		// otherwise send an ajax request to the back end to delete all completed cases from the database'
+		setError(false);
 		const reqData = {
 			action: 'arc_reset_data',
 			_ajax_nonce: respObj.resetNonce,
@@ -24,7 +26,7 @@ export default function ReviewHeader () {
 			error: function (response) {
 				console.log('something went wrong (error case)');
 				console.log(response);
-				// TODO
+				setError(response.statusText + ': ' + response.responseText);
 			},
 			success: function (response) {
 				if (response.type == 'success') {
@@ -33,20 +35,26 @@ export default function ReviewHeader () {
 				} else {
 					console.log('something went wrong');
 					console.log(response);
-					// TODO
+					setError(response.message || 'Something went wrong. Please try again.');
 				}
 			}
 		});
 	}
 
-	return (
+	return (<>
 		<Grid container>
-			<Grid item xs={6}>
-				<h2>{respTitle}</h2>
-			</Grid>
-			<Grid item xs={6}>
-				<Button variant='outlined' color='error' onClick={restartComparison}>Fresh Restart</Button>
+			<Grid item xs={11} />
+			<Grid item xs={1}>
+				<Button
+					variant='outlined'
+					color='error'
+					size='large'
+					sx={{fontSize:'1.5rem'}}
+					onClick={restartComparison}
+				>Restart</Button>
 			</Grid>
 		</Grid>
+		{error && <Alert severity="error" sx={{fontSize: '1.75rem', marginTop: '5px'}}>{error}</Alert>}
+	</>
 	);
 }

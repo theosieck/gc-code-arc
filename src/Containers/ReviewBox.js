@@ -4,7 +4,7 @@ import ReactHtmlParser from 'react-html-parser';
 import Matches from '../Components/Review/Matches';
 import Singles from '../Components/Review/Singles';
 import { Alert } from '@mui/material';
-import ReviewHeader from '../Components/Review/ReviewHeader';
+import RestartReview from '../Components/Review/RestartReview';
 
 export default function ReviewBox(props) {
 	// reviewSet = singles, matches = matches
@@ -83,7 +83,7 @@ export default function ReviewBox(props) {
 	return (
 		<div>
 			<div style={divStyle}>
-				<ReviewHeader />
+				<h2>{respTitle}</h2>
 				{ReactHtmlParser(response)}
 			</div>
 			<div style={divStyle}>
@@ -104,6 +104,8 @@ export default function ReviewBox(props) {
 			</div>
 			<button onClick={handleRevNext}>Next</button>
 			{error && <Alert severity="error" sx={{fontSize: '1.75rem', marginTop: '5px'}}>{error}</Alert>}
+
+			<RestartReview />
 		</div>
 	);
 }
