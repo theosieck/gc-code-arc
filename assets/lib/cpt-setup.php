@@ -23,7 +23,8 @@ function arc_register_cpt_response() {
         'public' => true,
         'taxonomies' => array('category'),
         'show_in_rest' => true,
-        'supports' => array('editor', 'title')
+        'supports' => array('editor', 'title'),
+        'capability_type' => array('response', 'responses') // set a custom capability so we can customize access to responses
     );
     register_post_type('response',$args);
 }
