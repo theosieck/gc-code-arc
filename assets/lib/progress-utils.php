@@ -93,7 +93,7 @@ function print_ct_info($ct_pair, $tasks, $current_project, $comp_num) {
 	$num_coded_responses = count($wpdb->get_results($sql));
 
 	// get total number of reviewed responses
-	$sql = "SELECT DISTINCT `resp_title` FROM `{$judgments_table}` WHERE `resp_title` LIKE 'c{$comp_num}-t{$task_num}-%' AND `judg_type` = 'rev' AND `project` = '{$current_project}'";
+	$sql = "SELECT DISTINCT `resp_title` FROM `{$judgments_table}` WHERE `resp_title` LIKE 'c{$comp_num}-t{$task_num}-%' AND `judg_type` = 'comp' AND `project` = '{$current_project}'";
 	if($is_indep) {
 		$sql .= " AND `user_id` = {$current_user->ID}";
 	}

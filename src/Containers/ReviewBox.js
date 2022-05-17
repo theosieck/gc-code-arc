@@ -4,6 +4,7 @@ import ReactHtmlParser from 'react-html-parser';
 import Matches from '../Components/Review/Matches';
 import Singles from '../Components/Review/Singles';
 import { Alert } from '@mui/material';
+import RestartReview from '../Components/Review/RestartReview';
 
 export default function ReviewBox(props) {
 	// reviewSet = singles, matches = matches
@@ -52,6 +53,11 @@ export default function ReviewBox(props) {
 		// reset state
 		setClicked([-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]);
 		setMatchExcerpts([]);
+		// store the completed case in redux
+		dispatch({
+			type: 'COMPLETE_CASE',
+			payload: respTitle
+		});
 		// pass the excerpts and chosen codes up
 		handleNext(excerpts, tmpClicked);
 	};
@@ -98,6 +104,8 @@ export default function ReviewBox(props) {
 			</div>
 			<button onClick={handleRevNext}>Next</button>
 			{error && <Alert severity="error" sx={{fontSize: '1.75rem', marginTop: '5px'}}>{error}</Alert>}
+
+			<RestartReview />
 		</div>
 	);
 }

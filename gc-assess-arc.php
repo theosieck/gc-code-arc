@@ -166,7 +166,8 @@ function gc_assess_arc_enqueue_scripts() {
               'compNum' => $comp_num,
               'taskNum' => $task_num,
 							'subNum' => $sub_num,
-              'review' => $review
+              'review' => $review,
+              'resetNonce' => wp_create_nonce('gc_reset_comp_nonce')
             );
           if(is_array($data_for_js)) {
             // there were no errors in pulling the data
@@ -347,7 +348,7 @@ function gcac_display_ct_pair_list() {
 		echo "<h2>{$current_project_name} Competency {$comp_num} Task {$task_num} Coded Cases</h2>";
 
 		// get list of titles from db
-    $judg_type = $is_rev ? 'rev' : 'ind';
+    $judg_type = $is_rev ? 'comp' : 'ind';
 		$sql = "SELECT DISTINCT `resp_title` FROM `{$judgments_table}` WHERE `resp_title` LIKE 'c{$comp_num}-t{$task_num}-%' AND `user_id` = {$current_user->ID} AND `judg_type` = '{$judg_type}' AND `project` = '{$current_project_name}'";
 		$titles = $wpdb->get_results($sql);
 
@@ -518,6 +519,39 @@ function arc_save_data() {
     $response = json_encode($response);
     echo $response;
     die();
+}
+
+// Genesis activation hook
+add_action('wp_ajax_arc_reset_data','arc_reset_data');
+/*
+ * remove completed cases from this run from the database
+ */
+function arc_reset_data() {
+  check_ajax_referer('gc_reset_comp_nonce');
+
+  global $wpdb;
+  global $code_table_postfix;
+	$code_table_name = $wpdb->prefix . $code_table_postfix;
+
+  // get completed cases from request
+  $cases_to_remove = $_POST['completed_cases'];
+
+  // remove the most recent occurrence of each one from the database
+  foreach ($cases_to_remove as $case_title) {
+    $sql = "DELETE FROM $code_table_name WHERE resp_title = '$case_title' ORDER BY judg_id DESC LIMIT 1";
+    $result = $wpdb->query($wpdb->prepare($sql));
+    if (!$result) {
+      $response['type'] = 'error';
+      $response['message'] = "Something went wrong removing case $case_title. " . $result;
+      $response = json_encode($response);
+      echo $response;
+      die();
+    }
+  }
+  $response['type'] = 'success';
+  $response = json_encode($response);
+  echo $response;
+  die();
 }
 
 ?>

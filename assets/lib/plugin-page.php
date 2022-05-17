@@ -12,7 +12,7 @@ function arc_data_export_menu() {
 	add_menu_page(
     'ARC Data Export',
     'ARC Data Export',
-    'manage_options',
+    'gc_proj_manager_caps',	// proj managers and admins can see this option
     $main_menu_url . '.php',
     'arc_data_export_page',
     'dashicons-download',

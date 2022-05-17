@@ -23,7 +23,9 @@ function arc_register_cpt_response() {
         'public' => true,
         'taxonomies' => array('category'),
         'show_in_rest' => true,
-        'supports' => array('editor', 'title')
+        'supports' => array('editor', 'title'),
+        'capability_type' => array('response', 'responses'), // set a custom capability so we can customize access to responses
+        'map_meta_cap' => true, // map custom capabilities
     );
     register_post_type('response',$args);
 }
@@ -79,7 +81,9 @@ function arc_register_cpt_scenario() {
             'public' => true,
             'taxonomies' => array('category'),
             'show_in_rest' => true,
-            'supports' => array('editor', 'title')
+            'supports' => array('editor', 'title'),
+            'capability_type' => array('scenario', 'scenarios'), // set a custom capability so we can customize access to responses
+            'map_meta_cap' => true, // map custom capabilities
         );
 
         register_post_type('scenario',$args);
