@@ -204,14 +204,14 @@ function arc_pull_review_data_cpts($judge1, $judge2, $comp_num, $task_num, $bloc
                 $sub_nums[] = $sub_num;
                 $resp_contents[$resp_id] = trim($response->post_content, '""');
             } else {   
-                // add a 'rev' line to the db for this sub, since both judges agreed
+                // add a 'comp' line to the db for this sub, since both judges agreed
                 $db_data = array(
                     'user_id' => $judge1,
                     'sub_num' => $sub[$judge1]->sub_num,
                     'comp_num' => $sub[$judge1]->comp_num,
                     'task_num' => $sub[$judge1]->task_num,
                     'resp_title' => $sub[$judge1]->resp_title,
-                    'judg_type' => 'rev',
+                    'judg_type' => 'comp',
                     'judg_level' => $sub[$judge1]->judg_level,
                     'judg_time'  => $sub[$judge1]->judg_time,
                     'rationale' => $sub[$judge1]->rationale

@@ -348,7 +348,7 @@ function gcac_display_ct_pair_list() {
 		echo "<h2>{$current_project_name} Competency {$comp_num} Task {$task_num} Coded Cases</h2>";
 
 		// get list of titles from db
-    $judg_type = $is_rev ? 'rev' : 'ind';
+    $judg_type = $is_rev ? 'comp' : 'ind';
 		$sql = "SELECT DISTINCT `resp_title` FROM `{$judgments_table}` WHERE `resp_title` LIKE 'c{$comp_num}-t{$task_num}-%' AND `user_id` = {$current_user->ID} AND `judg_type` = '{$judg_type}' AND `project` = '{$current_project_name}'";
 		$titles = $wpdb->get_results($sql);
 
